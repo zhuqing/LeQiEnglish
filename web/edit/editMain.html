@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script type="text/javascript" src="../js/jquery.js">
+	
+</script>
+        <script type="text/javascript" language="javascript">
+                var mycode = window.prompt("myCode", "code");
+            function iFrameHeight() {
+                var ifm = document.getElementById("iframepage");
+                var subWeb = document.frames ? document.frames["iframepage"].document : ifm.contentDocument;
+                if (ifm != null && subWeb != null) {
+                    ifm.height = subWeb.body.scrollHeight;
+                    ifm.width = subWeb.body.scrollWidth;
+                }
+            }
+            
+            function changeUrl(url){
+                $("#iframepage").attr("src",url);
+            }
+        </script>
+        <style>
+            #main_menu_div{
+                width: 10%;
+                height: 100%;
+                float: left;
+            }
+            #main_content_div{
+                width: 90%;
+                height: 100%;
+                float: right;
+            }
+            #main_div{
+                width: 100%;
+
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main_div">
+            <div id="main_menu_div">
+                <div onclick="changeUrl('./edit.html')">文章</div>
+                <div onclick="changeUrl('./famous.html')">名言</div>
+                <div onclick="changeUrl('./catalog.html')">分类</div>
+            </div>
+            <div id="main_content_div">
+                <iframe  src="./edit.html" style="width:100%;"  id="iframepage" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" onLoad="iFrameHeight()">
+                </iframe>
+            </div>
+        </div>
+
+
+    </body>
+</html>

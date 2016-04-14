@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>每日一词</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+<link rel="stylesheet" type="text/css" href="./css/all.css">
+<link rel="stylesheet" type="text/css" href="./js/showDialog.css">
+<script type="text/javascript" src="./js/jquery.js">
+	
+</script>
+<script type="text/javascript" src="./js/md5.js">
+	
+</script>
+<script type="text/javascript" src="./js/leqi.js">
+	
+</script>
+<script type="text/javascript" src="./js/showDialog.js">
+	
+</script>
+<script type="text/javascript">
+var odowType = 2;
+var allCount ;
+	$(document).ready(function() {
+		addTable(httpURL + "/content/table.html", true);
+	});
+	function turnPage(page, size) {
+		$.ajax({
+			url : "./edit/content_getContentListByType!getContentListByType.do",
+			data : "currentPage=" + page + "&size=" + size+"&type="+odowType,
+			type : "POST",
+			dataType : "json",
+			success : function(result) {
+				var currentPage = result.currentPage;
+				size = result.pageSize;
+				var allPage = result.allPage;
+				allCount = result.allCount;
+				var list = result.list;
+				setPage(size, currentPage, allPage, allCount);
+				createTable(list,size,currentPage,allCount);
+			}
+		});
+	}
+	
+    function reader(id,type){
+         window.location.href = "./content/readContent.html?type="+type+"&id="+id;
+    }
+</script>
+</head>
+
+<body>
+
+</body>
+</html>

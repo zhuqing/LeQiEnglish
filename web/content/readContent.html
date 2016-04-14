@@ -1,0 +1,534 @@
+
+<html xmlns:wb="http://open.weibo.com/wb">
+    <head>
+        <title></title>
+
+        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+        <meta http-equiv="description" content="this is my page">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />
+        <link rel="stylesheet" type="text/css" href="../css/style.css">
+        <link rel="stylesheet" type="text/css" href="../css/all.css">
+        <link rel="stylesheet" href="../css/common.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="../js/showDialog.css">
+        <script type="text/javascript" src="../js/jquery.js">
+
+        </script>
+        <script type="text/javascript" src="../js/dateutil.js"></script>
+        <script type="text/javascript" src="../js/leqi.js">
+
+        </script>
+        <script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript" src="../js/comment.js">
+
+        </script>
+        <script type="text/javascript" src="../js/showDialog.js">
+
+        </script>
+        <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="../js/xheditor.js"></script>
+
+        <script type="text/javascript">
+            var type;
+            var id;
+            var path;
+            var iconPath;
+            var recommentCount;//评论数
+            $(document).ready(function() {
+
+                setContent2IdByUrl(httpURL + "/header.html", "content_header");
+                setContent2IdByUrl(httpURL + "/bottom.html", "content_bottom");
+                getMoreArtical();
+                //setHeader(httpURL+"/header.html");
+                $("#email").val("");
+                $("#username").val("");
+                $("#message").val("");
+               // type = GetQueryString("type");
+                id = GetQueryString("id");
+               // path = GetQueryString("path");
+
+                // alert(path);
+                // var title = GetQueryString("title");
+                if ( id == null) {
+                    window.location.href = httpURL + "/index.html";
+                    return;
+                }
+                getComment();
+                fetchWords(id);
+                $.ajax({
+                    url: httpURL + "/edit/content!getContentInfo.do",
+                    data: "id=" + id,
+                    dataType: "json",
+                    type: "POST",
+                    success: function(msg) {
+                        if (msg.msg != "error") {
+                            $("#title_txt").html(msg.title);
+                            document.title = msg.title;
+                            var dateStr = getDate(msg.createTime, "yyyy-MM-dd hh:mm:ss");
+                            $("#content_information").html("update:" + dateStr);
+                            if (msg.fromwhere != null && msg.fromwhere.length > 0) {
+                                $("#content_fromwhere").html("<span>come from：</span>" + msg.fromwhere);
+                            }
+                            $("#content_text").html(msg.content);
+                            $("#content_image").attr("src", httpURL + "/" + msg.iconPath);
+                            $("#header_message").html("选中单词 帮助翻译");
+                            // relayoutImage( $("#content_text").find("img"));
+//                            if (undefined === msg.summary) {
+//                                ("#content_summary").hide();
+//                            } else {
+//                               // $("#content_summary").html("  <span style=' font-weight: bolder'> &nbsp; &nbsp;summary：</span>" + msg.summary);
+//                            }
+                            upnextPage(msg.id);
+                            updateReader(msg.reader + 1);
+                            $("#content_content").mouseup(getSelectionText);
+                        }
+                    },
+                    error: function() {
+                    }
+                });
+
+            });
+
+            function fetchWords(contentId) {
+                $.ajax({
+                    url: httpURL + "/dict_fetchWords!fetchWords.do",
+                    data: {id: contentId},
+                    type: 'post',
+                    dataType: "json",
+                    async: false,
+                    success: function(msg) {
+                        var arr = msg.list;
+
+                        for (var i = 0; i < arr.length; i++) {
+                            if (arr[i].title != null) {
+                                var wordMean = arr[i].content;
+                                if (wordMean.data.length == 0) {
+                                    continue;
+                                }
+                                var tr = $("<tr></tr>");
+                                var wordsTb = $("<td valign='top'>" + arr[i].title + "</td>");
+                                var meandsTb = $("<td></td>");
+                                tr.append(wordsTb);
+                                tr.append(meandsTb);
+                                $("#wordsTable").append(tr);
+                                // $("#wordsTable").append(tr);
+                                var wordMean = arr[i].content;
+                                if (wordMean.data.length == 0) {
+
+                                }
+                                var wordSymbols = wordMean.data.symbols;
+                                for (var j = 0; j < wordSymbols.length; j++) {
+                                    var symbol = wordSymbols[j];
+                                    if (symbol.ph_am.length != 0) {
+                                        var phDiv = $("<div>美[" + symbol.ph_am + "]\t英[" + symbol.ph_en + "]</div>");
+                                        meandsTb.append(phDiv);
+                                    }
+
+                                    var parts = symbol.parts;
+                                    var partStr = "";
+                                    for (var l = 0; l < parts.length; l++) {
+                                        var part = parts[l];
+                                        partStr += part.part;
+                                        var means = part.means;
+                                        for (var m = 0; m < means.length; m++) {
+                                            partStr += means[m];
+                                            if (m != means.length - 1) {
+                                                partStr += ";";
+                                            }
+                                        }
+                                        partStr += "\t";
+                                    }
+
+                                    var meanDiv = $("<div>" + partStr + "</div>");
+                                    meandsTb.append(meanDiv);
+                                }
+
+                            }
+                        }
+                    }
+                });
+            }
+
+
+            function updateReader(reader) {
+                $.ajax({
+                    url: httpURL + "/edit/content!updateReader.do",
+                    data: "id=" + id + "&reCommentId=" + reader,
+                    type: "POST",
+                    dataType: "json",
+                    success: function(msg) {
+                        //alert(msg.msg);
+                    }
+                });
+            }
+            /**
+             * 获取更多的文章
+             * @param {type} id
+             * @returns {undefined}
+             */
+            function getMoreArtical() {
+                //
+                $.ajax({
+                    url: httpURL + "/edit/content_getMoreArtical!getMoreArtical.do",
+                    data: "type=0",
+                    type: "POST",
+                    dataType: "json",
+                    success: function(msg) {
+                        if (msg.msg != "error") {
+                            var contents = msg.list;
+                            for (var i = 0; i < contents.length; i++) {
+                                var content = contents[i];
+                                $("#more_like").append("<a class='gridview_border_url' href='" + httpURL + "/content/readContent.html?type=" + content.contenttype + "&id=" + content.id + "'>" + content.title + "</a><br/>");
+                            }
+                        }
+                    }
+                });
+            }
+
+            function upnextPage(id) {
+                $.ajax({
+                    url: httpURL + "/edit/content!getContentNextUp.do",
+                    data: "id=" + id + "&type=" + type,
+                    dataType: "json",
+                    type: "POST",
+                    success: function(msg) {
+                        //alert(msg);
+                        if (msg.per == 1) {
+                            $("#per").html("<a href='#' onclick='gotoNewPage(" + msg.perobj.id + ");return false;'>&lt;&lt;" + msg.perobj.title + "</a>");
+                        } else {
+                            $("#per").html("没有了");
+                        }
+
+                        if (msg.next == 1) {
+                            $("#next").html("<a href='#' onclick='gotoNewPage(" + msg.nextobj.id + ");return false;'>" + msg.nextobj.title + "&gt;&gt;</a>");
+                        } else {
+                            $("#next").html("没有了");
+                        }
+                    },
+                    error: function() {
+                    }
+                });
+            }
+
+            function gotoNewPage(id) {
+                window.location.href = httpURL + "/content/readContent.html?type=" + type + "&id=" + id;
+            }
+
+            /**
+             * 从新计算布局
+             * @param {type} event
+             * @returns {undefined}
+             */
+            function relayout() {
+                var currentWidth = document.documentElement.clientWidth;
+                if (currentWidth < 600) {
+                    $("#content_left").css({width: "0px"});
+                    $("#content_right").css({width: "0px"});
+                    $("#content_center").css({width: currentWidth + "px"});
+                    //  $("#content_right").attr(width,0);
+                }
+                //reSetImageLayout();
+            }
+            /**
+             * 重新计算图片的布局
+             * @param {type} event
+             * @returns {undefined}
+             */
+            function reSetImageLayout() {
+
+                var width = $("#content_summary").width();
+                width -= 10;
+                $("#content_image").css({width: width + "px"});
+                $("#content_image").css({height: width * 0.7 + "px"});
+
+            }
+            /**
+             * 重新布局内容内图片的布局
+             * @param {type} event
+             * @returns {undefined}
+             */
+            function relayoutImage(images) {
+                var currentWidth = $("#content_center").width();
+                if (currentWidth > 40) {
+                    currentWidth = currentWidth - 20;
+                }
+                for (var i = 0; i < images.length; i++) {
+                    var cuheight = currentWidth * images[i].height() * 1.0 / images[i].width();
+                    images[i].css({width: currentWidth + "px", height: cuheight + "px"});
+                }
+            }
+
+            function getSelectionText(event) {
+                var selectTxt = "";
+                if (window.getSelection) {
+                    //标准浏览器支持的方法
+                    selectTxt = window.getSelection().toString();
+                } else if (document.selection) {
+                    //IE浏览器支持的方法
+                    selectTxt = document.selection.createRange().text;
+                }
+                if (selectTxt.length === 0 || selectTxt.length > 50) {
+                    return;
+                }
+                var url = "http://openapi.baidu.com/public/2.0/bmt/translate";
+                $.ajax({
+                    url: url,
+                    data: "client_id=wYFruBcLqKTRfCbXeQNWQ72w&from=en&to=zh&q=" + selectTxt,
+                    type: "GET",
+                    dataType: "jsonp",
+                    success: function(msg) {
+                        if (undefined === msg.trans_result) {
+                            // alert(msg.error_msg);
+                            return;
+                        }
+
+
+                        var trancs = selectTxt + ":";
+                        for (var i = 0; i < msg.trans_result.length; i++) {
+                            trancs += msg.trans_result[i].dst + " ";
+                        }
+                        // $("#errormsg").html("trancs").fadeTo(3000).hide();
+                        ///alert(event.pageX);
+                        var pos = mouseCoords(event);
+                        // alert(event.clientY);
+                        showTips(trancs, pos.y + 30, pos.x, 8);
+                    }
+
+                }
+                );
+            }
+            function mouseCoords(ev)
+            {
+                if (ev.pageX || ev.pageY) {
+                    return {x: ev.pageX, y: ev.pageY};
+                }
+                return{
+                    x: ev.clientX + document.body.scrollLeft - document.body.clientLeft,
+                    y: ev.clientY + document.body.scrollTop - document.body.clientTop
+                };
+            }
+            function showTips(tips, top, left, time) {
+//                var windowWidth = document.documentElement.clientWidth;
+                $('#tips').html(tips);
+                $('#tips').css({
+                    'top': top + 'px',
+                    'left': left - (tips.length * 13 / 2) + 'px'
+
+                }).show();
+                setTimeout(function() {
+                    $('#tips').fadeOut();
+                }, (time * 1000));
+            }
+
+
+        </script>
+        <!-- 将此代码放在适当的位置，建议在body结束前 -->
+        <script id="bdimgshare_shell"></script>
+        <script>
+            var bdShare_config_imgshare = {
+                "type": "list"
+                , "size": "small"
+                , "pos": "top"
+                , "color": "black"
+                , "list": ["qzone", "tsina", "tqq", "renren", "t163"]
+                , "uid": "1051393"
+            };
+            document.getElementById("bdimgshare_shell").src = "http://bdimg.share.baidu.com/static/js/imgshare_shell.js?cdnversion=" + Math.ceil(new Date() / 3600000);
+        </script>
+
+        <style>
+
+            #content_all{
+                width:100%;
+                font-size: 16px;
+                float: left;
+                margin-top: 20px;
+                top:60px;
+            }
+            #content_left{
+                float:left;
+                width: 15%;
+            }
+            #content_right{
+                float: right;
+
+                width:15%;
+
+            }
+            #content_information{
+                color: #999999;
+                font-size: 12px;
+                height: 12px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            #content_center{
+                width: 70%;
+                float:left;
+
+            }
+            #content_content{
+
+
+            }
+            #content_text{
+                color: #3D3D3D;
+                font-family:"Pt serif","Georgia","Serif";
+                line-height: 32px;
+                font-size: 19px;
+
+            }
+
+
+            #wordsTable{
+                font-size: 12px;
+                color:#3D3D3D;
+                line-height: 24px;
+
+                /*                border-color: #3D3D3D;
+                                border-width: 1px;
+                                border-style:solid;*/
+            }
+            #content_content_inner{
+                padding: 40px 40px 40px 40px;
+                border:1px dotted #ddd;
+                background-color: #f6f6f6;
+            }
+            #content_fromwhere{
+                font-size: 12px;
+                color:#3D3D3D
+            }
+            #content_fromwhere span{
+                color: #269abc;
+            }
+            #clear{
+                clear: both;
+            }
+
+            #content_bottom{
+                width: 100%;
+                height:200px;
+            }
+            #title_txt{
+                padding-top: 15px;
+                border-top: 1px solid #fff;
+            }
+            #navigation{
+                padding-bottom: 10px;
+                vertical-align:middle; 
+                border-bottom: 1px #ddd solid;
+                color: #999999;
+                font-size: 12px;
+            }
+
+            #content_image_div{
+                margin-right: 10px;
+                margin-left:10px;
+                margin-bottom: 10px;
+                margin-top: 10px;
+                font-size: 14px;
+                font-family:initial;
+                //  padding: 10px 10px 10px 10px;
+                // background-color: #D1DEEF;
+                // border: 2px #3D3D3D dotted;
+
+            }
+            #content_share{
+                float: right;
+            }
+
+            #more_like span{
+                font-size: 14px;
+                color:#8FB5E8;
+            }
+            #more_like {
+                padding-top: 20px;
+            }
+            #tips{
+                position: absolute;
+                padding: 3px 5px;
+                background: #3D3D3D;
+                font-size: 12px;
+                margin: 0 auto;
+                text-align: center;
+                width: auto;
+                color: #ffffff;
+                opacity: 0.9;
+            }
+        </style>
+    </head>
+
+    <body onload="relayout()">
+        <div id="content_header">
+
+        </div>
+        <div id="content_all" >
+            <div id="content_left">
+                &nbsp; &nbsp;
+            </div>
+
+            <div id="content_center">
+                <div id="content_content">
+                    <div id="content_content_inner">
+                        <div id="navigation">
+                            当前位置：
+                            <a>跟我学</a>
+                            >
+                            <a>每日一词</a>
+                            >文章正文
+
+
+                        </div>
+
+                        <div  id="title_txt">
+
+                        </div>
+                        <div id="content_information">
+
+                        </div>
+                        <div id="content_fromwhere">
+
+                        </div>
+
+
+                        <div id="content_image_div">
+                            <img id="content_image" style="width:100%"/>
+                        </div>
+
+                        <table id="wordsTable" style="width:100%" >
+
+                        </table>
+
+                        <div id="content_text" >
+
+                        </div>
+                        <div id="content_share">
+                            <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
+                            <script>window._bd_share_config = {"common": {"bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "32"}, "share": {}, "image": {"viewList": ["qzone", "tsina", "tqq", "renren", "weixin"], "viewText": "分享到：", "viewSize": "16"}};
+                                with (document)
+                                    0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+                        </div>
+                    </div>
+
+                    <div id="more_like"><span>You may also like</span><br/>
+
+                    </div>
+
+                </div>
+
+                <div id="content_right">
+
+                </div>
+                <div id="clear">
+
+                </div>
+                <div id="content_bottom">
+                </div>
+            </div>
+
+            <div id="tips"/>
+
+    </body>
+</html>

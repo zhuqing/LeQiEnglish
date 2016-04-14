@@ -1,0 +1,322 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript" src="../js/jquery.js">
+
+        </script>
+        <script type="text/javascript" src="../js/md5.js">
+
+        </script>
+        <script type="text/javascript" src="../js/leqi.js">
+
+        </script>
+        <script type="text/javascript" src="../js/showDialog.js">
+
+        </script>
+        <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+        <link rel="stylesheet" href="../css/common.css" type="text/css" />
+        <link rel="stylesheet" href="../css/all.css" type="text/css" />
+        <script type="text/javascript" src="../js/xheditor.js"></script>
+        <title></title>
+        <script type="text/javascript">
+            $(pageInit);
+            var titleErro = false;
+            function pageInit()
+            {
+                loadimag($("#image"));
+                getAllCatalog();
+                // $('#message').xheditor({tools: 'full', upImgUrl: httpURL + "/code", upImgExt: "jpg,jpeg,gif,png"});
+                // $('#summary').xheditor({tools:'full',upImgUrl:httpURL+"/edit/content!updataImage.do",upImgExt:"jpg,jpeg,gif,png"});
+                $('#title').val("");
+                $('#message').val("");
+                $('#summary').val("");
+                $('#author').val("");
+                $('#from').val("");
+                $('#leibie').val("0");
+                $("#zhuanzai1").hide();
+                $("#zhuanzai2").hide();
+                //	$('#elm1').xheditor({upLinkUrl:"upload.php",upLinkExt:"zip,rar,txt",upImgUrl:"upload.php",upImgExt:"jpg,jpeg,gif,png",upFlashUrl:"upload.php",upFlashExt:"swf",upMediaUrl:"upload.php",upMediaExt:"avi"});
+
+            }
+
+            function submit() {
+
+                if (titleErro) {
+                    alert("标题有问题");
+                    return;
+                }
+                var mycode = window.parent.window.mycode;
+                var title = $('#title').val();
+                var type = $("input:radio[name='type'][checked]").val();
+                //var type = $('#type').val();
+                var message = $('#message').val();
+                var fromwhere = $('#fromwhere').val();
+                var piccode = $('#piccode').val();
+                var fileName = $('#fileName').val();
+                var summary = $("#summary").val();
+
+                var catalogs = getCatalogs($("#catalogbox input"));
+                var words = getCatalogs($("#words input"));
+
+
+
+                if (!checkCode(piccode)) {
+                    loadimag($("#image"));
+                   // return;
+                }
+                // alert(request.QueryString("piccode"));
+                $.ajax({
+                    url: httpURL + "/content/insert",
+                    type: 'POST',
+                    data: {mycode: mycode, title: title, type: type, content: message, fromwhere: fromwhere, fileName: fileName, catalogs: catalogs, summary: summary, words: words},
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (msg) {
+                        if (msg.msg == "ok") {
+                            alert("提交成功");
+                            $('#title').val("");
+                            $('#message').val("");
+                            $('#imageSrc').attr("src", "");
+                            $('#fileName').val("");
+                        } else {
+                            alert("未登录");
+                        }
+                    },
+                    error: function () {
+                        //alert("error");
+                    }
+
+
+                });
+            }
+
+            function cancel() {
+
+            }
+
+            function getCatalogs(checkboxs) {
+                //var checkboxs = $("#catalogbox input");
+                var chese = "";
+                for (var i = 0; i < checkboxs.length; i++) {
+                    if (checkboxs[i].checked) {
+                        chese += checkboxs[i].value + ";";
+                    }
+                }
+
+                return chese;
+            }
+
+
+            function clearn() {
+                $('#piccode').val("");
+            }
+
+            function uploadImage() {
+                $('#fileName').val($('#icon').val());
+                $.ajaxFileUpload
+                        (
+                                {
+                                    url: httpURL + "/code/fetch",
+                                    data: {fileName: $('#icon').val()},
+                                    secureuri: false,
+                                    fileElementId: 'icon',
+                                    dataType: 'json',
+                                    success: function (data, status)
+                                    {
+                                        if (typeof (data.error) != 'undefined')
+                                        {
+                                            if (data.error != '')
+                                            {
+                                                alert(data.error);
+                                            } else
+                                            {
+                                                alert(data.msg);
+                                            }
+                                        } else {
+                                            var imagePath = data.path;
+                                            $('#imageSrc').attr("src", httpURL + "/" + imagePath);
+                                            $('#fileName').val(imagePath);
+
+                                        }
+                                    },
+                                    error: function (data, status, e)
+                                    {
+                                        alert(e);
+                                    }
+                                }
+                        );
+
+                return false;
+
+
+            }
+
+            function selectChange() {
+                $("#zhuanzai").toggle();
+            }
+
+            function getAllCatalog() {
+                $.ajax({
+                    url: httpURL + "/catalog_searchAll!searchAll.do",
+                    type: 'post',
+                    dataType: "json",
+                    async: false,
+                    success: function (msg) {
+                        var arr = msg.list;
+                        for (var i = 0; i < arr.length; i++) {
+                            if (arr[i].name != null) {
+                                $("#catalogbox").append("<input type='checkbox' value='" + arr[i].id + "'/> " + arr[i].name + "");
+                            }
+                        }
+                    }
+                });
+            }
+
+            function fitchDict() {
+                var content = $("#message").val();
+                $.ajax({
+                    url: httpURL + "/dict_fetchDicts!fetchDicts.do",
+                    data: {content: content},
+                    type: 'post',
+                    dataType: "json",
+                    async: false,
+                    success: function (msg) {
+                        var arr = msg.list;
+                        $("#words").html("");
+                        for (var i = 0; i < arr.length; i++) {
+                            if (arr[i].title != null) {
+                                $("#words").append("<input type='checkbox' value='" + arr[i].id + "'/> " + arr[i].title + "");
+                            }
+                        }
+
+                        window.parent.window.iFrameHeight();
+                    }
+                });
+            }
+
+
+            function titleChange(th) {
+
+                $.ajax({
+                    url: httpURL + "/content/hasTitle/"+th.value,
+                    type: 'post',
+                    dataType: "json",
+                    async: false,
+                    success: function (msg) {
+                        var bool = msg.value;
+                      
+                        if (bool == true) {
+                            $("#title").attr("class", "input-error");
+                              titleErro = true;
+                        } else {
+                            $("#title").attr("class", "edit_title_input");
+                             titleErro = false;
+                        }
+                    }
+                });
+
+            }
+        </script>
+    </head>
+    <body>
+        <table style="width:100%">
+            <tr>
+                <td colspan="3" style="height:60px"></td>
+            </tr>
+
+            <tr>
+                <td style="width:15%"></td>
+                <td style="width:70%">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:10%"><select class="edit_title_input"
+                                                          name="type" id="from" onchange="selectChange()">
+
+                                    <option value="ARTICLE">原创</option>
+                                    <option value="1">转载</option>
+                                </select></td>
+                            <td><input type='search' class="edit_title_input" onchange="titleChange(this)"
+                                       name="title" id="title" placeholder='文章标题' />
+                                <input id="mycode" type="hidden" name="mycode"/></td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2"><label><input name="type"
+                                                          type="radio" value="ARTICLE" checked="checked" />文章 </label> <label><input
+                                        name="type" type="radio" value="6" />课程 </label> <label><input
+                                        name="type" type="radio" value="4" />名言 </label>
+                                <label><input
+                                        name="type" type="radio" value="8" />语法</label>
+                            </td>
+                        </tr>
+                        <tr id="zhuanzai" style="display:none">
+
+                            <td colspan="2"><input type='search' class="edit_title_input"
+                                                   id="fromwhere" name="fromwhere" placeholder='转载自' />
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2"><img id="imageSrc"
+                                                 src="../duoduoroom/file/2014927/bc49bee3-9a26-47cb-803c-61ad13880325.jpg"
+                                                 width="100px" height="100px" /> <input type="file" id="icon"
+                                                 name="icon" size="15" enctype="multipart/form-data"
+                                                 onchange="uploadImage()" maxlength="100" /> <input type="hidden"
+                                                 id="fileName" name="fileName" value="" />
+                            </td>
+                        </tr>
+
+                        <tr>
+
+                            <td colspan="2"><input type='search' class="edit_title_input"
+                                                   id="piccode" name="piccode"  placeholder='验证码' /></td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2"><img id="image" /><a href="#"
+                                                                 onclick="loadimag($('#image'));">看不清</a></td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2">
+                                <span id="catalogbox"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"><textarea id="summary" name="summary" placeholder="摘要不能超过200字"
+                                                      rows="5" style="width: 100% ;"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><textarea id="message" name="message" placeholder="正文....."
+                                                      rows="40" cols="180" style="width: 100% ;"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" id="words">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="right">
+                                <input type="button" name="dict" value="获取翻译" onclick="fitchDict()"/>
+                                <input type="button"
+                                       name="save" value="Submit" onclick="submit()" /> <input
+                                       type="button" name="reset" value="Reset" onclick="cancel()" />
+                            </td>
+                        </tr>
+                    </table></td>
+                <td style="width:15%"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="height:60px"></td>
+            </tr>
+        </table>
+
+
+    </body>
+</html>

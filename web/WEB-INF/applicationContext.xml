@@ -1,0 +1,180 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!-- was: <?xml version="1.0" encoding="UTF-8"?> -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+    <!--bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+          p:location="/WEB-INF/jdbc.properties" />
+
+<bean id="dataSource"
+    class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+    p:driverClassName="${jdbc.driverClassName}"
+    p:url="${jdbc.url}"
+    p:username="${jdbc.username}"
+    p:password="${jdbc.password}" /-->
+
+    <!-- ADD PERSISTENCE SUPPORT HERE (jpa, hibernate, etc) -->
+<!--      <bean id="sessionFactory"
+          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="configLocation"
+                  value="classpath:hibernate.cfg.xml">
+        </property>
+    </bean>
+	
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+     定义事务拦截规则 
+    <bean id="baseTransactionProxy" abstract="true"
+          class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="transactionAttributes">
+            <props>
+                <prop key="changefindSeq">
+                    PROPAGATION_REQUIRES_NEW,-Exception
+                </prop>
+                 公共事务 
+                <prop key="startFlow">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="executeTask">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="change*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="lock*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="unLock*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="modify*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="update*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="save*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="deploy*">PROPAGATION_REQUIRED,-Exception</prop>   
+     
+                <prop key="delete*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="process*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="reject*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="insert*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="make*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="commit*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="remove*">
+                    PROPAGATION_REQUIRED,-Exception
+                </prop>
+                <prop key="add*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="complete*">PROPAGATION_REQUIRED,-Exception</prop>
+                <prop key="*">
+                    PROPAGATION_REQUIRED,readOnly,-DataAccessException,-RuntimeException,-Exception
+                </prop>
+            </props>
+        </property>
+    </bean>
+  
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory">
+            <ref bean="sessionFactory" />
+        </property>
+    </bean>
+    DAO 
+    <bean id="userDao" class="com.leqienglish.daoimpl.UserDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    <bean id="contentDao" class="com.leqienglish.daoimpl.ContentDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    <bean id="dictDao" class="com.leqienglish.daoimpl.DictDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+	
+    <bean id="titleTipDao" class="com.leqienglish.daoimpl.TitleTipDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+    <bean id="commentDao" class = "com.leqienglish.daoimpl.CommentDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+ <bean id="catalogDao" class = "com.leqienglish.daoimpl.CatalogDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+	
+    <bean id="relationShipDao" class = "com.leqienglish.daoimpl.RelationShipDaoImpl">
+        <property name="hibernateTemplate">
+            <ref  bean="hibernateTemplate"/>
+        </property>
+    </bean>
+
+	
+     Biz 
+    <bean id="userBiz" class="com.leqienglish.bizimpl.UserBizImpl">
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+    <bean id="dictBiz" class="com.leqienglish.bizimpl.DictBizImpl">
+        <property name="dictDao" ref="dictDao"></property>
+        <property name="contentDao" ref="contentDao"></property>
+        <property name="relationShipDao" ref="relationShipDao"></property>
+    </bean>
+    <bean id="catalogBiz" class="com.leqienglish.bizimpl.CatalogBizImpl">
+        <property name="catalogDao" ref="catalogDao"></property>
+    </bean>
+    <bean id="titleTip" class="com.leqienglish.bizimpl.TitleTipBizImpl">
+        <property name="titleTipDao" ref="titleTipDao"></property>
+    </bean>
+    <bean id="contentBiz" class="com.leqienglish.bizimpl.ContentBizImpl">
+        <property name="contentDao" ref="contentDao"></property>
+	 
+        <property name="titleTipDao" ref="titleTipDao"></property>
+        <property name="commentDao" ref="commentDao"></property>
+        <property name="relationShipDao" ref="relationShipDao"></property>
+    </bean>-->
+    
+    <!-- ACTION -->
+    <!--    <bean id="useraction" class="cn.duoduo.action.UserAction">
+        <property name="userBiz" ref="userBiz"></property>
+    </bean>-->
+    <!--    <bean id="contentaction" class="com.leqienglish.action.ContentAction">
+        <property name="contentBiz" ref="contentBiz"></property>
+        <property name="dictBiz" ref="dictBiz"></property>
+    </bean>-->
+    <!--    <bean id="catalogAction" class="cn.duoduo.action.CatalogAction">
+        <property name="catalogBiz" ref="catalogBiz"></property>
+    </bean>
+    <bean id="dictAction" class="cn.duoduo.action.DictAction">
+        <property name="dictBiz" ref="dictBiz"></property>
+    </bean>
+    <bean id="titleAction" class="cn.duoduo.action.TitleTipAction">
+        <property name="titleTipBiz" ref="titleTipBiz"></property>
+    </bean>-->
+</beans>

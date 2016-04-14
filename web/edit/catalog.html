@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript" src="../js/jquery.js">
+
+        </script>
+        <script type="text/javascript" src="../js/md5.js">
+
+        </script>
+        <script type="text/javascript" src="../js/leqi.js">
+
+        </script>
+        <script type="text/javascript" src="../js/showDialog.js">
+
+        </script>
+        <script type="text/javascript" src="../js/jquery.cookie.js"></script>
+        <script type="text/javascript" src="../js/ajaxfileupload.js"></script>
+        <link rel="stylesheet" href="../css/common.css" type="text/css" />
+        <link rel="stylesheet" href="../css/all.css" type="text/css" />
+        <script type="text/javascript" src="../js/xheditor.js"></script>
+        <title></title>
+        <script type="text/javascript">
+            $(pageInit);
+            function pageInit()
+            {
+                loadimag($("#image"));
+                $('#name').val("");
+                $('#desc').val("");
+                clearn();
+
+            }
+
+            function submit() {
+                var name = $('#name').val();
+
+                var desc = $('#desc').val();
+
+                var piccode = $('#piccode').val();
+
+                if (!checkCode(piccode)) {
+                    loadimag($("#image"));
+                    return;
+                }
+                if ('' == desc) {
+                    alert("desc没有文章内容");
+                    return;
+                }
+                // alert(request.QueryString("piccode"));
+                $.ajax({
+                    url: httpURL + "/catalog_insert!insert.do",
+                    type: 'POST',
+                    data: {name: name, desc: desc},
+                    dataType: 'json',
+                    success: function(msg) {
+                        if (msg.msg == "ok") {
+                            alert("提交成功");
+                            pageInit();
+                        } else {
+                            alert("未登录");
+                        }
+                    },
+                    error: function() {
+                        //alert("error");
+                    }
+
+
+                });
+            }
+
+
+
+            function clearn() {
+                $('#piccode').val("");
+            }
+        </script>
+    </head>
+    <body>
+        <table style="width:100%">
+            <tr>
+                <td colspan="3" style="height:60px"></td>
+            </tr>
+
+            <tr>
+                <td style="width:15%"></td>
+                <td style="width:70%">
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:10%">名称：</td>
+                            <td><input type='search' class="edit_title_input" name="name"
+                                       id="name" /></td>
+                        </tr>
+
+                        <tr id="zhuanzai">
+                            <td>描述：</td>
+                            <td><textarea id="desc" rows="4" class="edit_title_input">
+                                </textarea>
+                            </td>
+                        </tr>
+
+
+                        <tr>
+
+                            <td colspan="2"><input type='search' class="edit_title_input"
+                                                   id="piccode" name="piccode" placeholder='验证码' /></td>
+                        </tr>
+                        <tr>
+
+                            <td colspan="2"><img id="image" /><a href="#"
+                                                                 onclick="loadimag($('#image'));">看不清</a></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2" align="right"><input type="button"
+                                                                 name="save" value="Submit" onclick="submit()" /> <input
+                                                                 type="button" name="reset" value="Reset" onclick="cancel()" />
+                            </td>
+                        </tr>
+                    </table></td>
+                <td style="width:15%"></td>
+            </tr>
+
+            <tr>
+                <td colspan="3" style="height:60px"></td>
+            </tr>
+        </table>
+
+
+    </body>
+</html>

@@ -1,0 +1,314 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>用户注册</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<link rel="stylesheet" href="../css/adduser.css" type="text/css"
+	media="screen" />
+<link rel="stylesheet" href="../css/all.css" type="text/css"
+	media="screen" />
+<link rel="stylesheet" type="text/css" href="../css/style.css">
+<link rel="stylesheet" type="text/css" href="../js/showDialog.css">
+
+<script type="text/javascript" src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/leqi.js"></script>
+<script type="text/javascript" src="../js/md5.js"></script>
+    <script type="text/javascript" src="../js/showDialog.js"> </script>
+<script type="text/javascript">
+	var check = false;
+	var email;
+	$(document).ready(function() {
+
+		addTable("../content/table.html", false, callback);
+
+	});
+	function callback() {
+		var stepIndex = GetQueryString("step");
+		if (stepIndex == null) {
+			stepIndex = 1;
+		} else {
+			stepIndex = parseInt(stepIndex);
+		}
+		step(stepIndex);
+	}
+	function step(index) {
+
+		switch (index) {
+		case 1:
+			stepFirst();
+			break;
+		case 2:
+
+			stepSecond();
+			break;
+		case 3:
+			stepthird();
+			break;
+		default:
+
+		}
+	}
+
+	function stepFirst() {
+		$.ajax({
+			url : "./regist.html",
+			dataType : "text",
+			type : "POST",
+			success : function(msg) {
+				$("#contentList").html(msg);
+			},
+			error : function() {
+			}
+		});
+	}
+
+	function stepSecond() {
+		//alert(2);
+		email = GetQueryString("email");
+		$.ajax({
+			url : "./activity.html",
+			dataType : "text",
+			type : "POST",
+			success : function(msg) {
+				$("#contentList").html(msg);
+				emailLoad();
+			},
+			error : function() {
+			}
+		});
+	}
+
+	function emailLoad() {
+		$("#emailloaded").html(email).attr("href",
+				"http://mail." + email.split("@")[1]);
+
+	}
+
+	function stepthird() {
+		var uuid = GetQueryString("activityCode");
+		$.ajax({
+			url : httpURL
+					+ "/user/user_activityUser!activityUser.do?activityCode="
+					+ uuid,
+			dataType : "json",
+			type : "POST",
+			success : function(msg) {
+				if (msg.msg == "ok") {
+					addstep3();
+				} else {
+					alert("激活失败");
+				}
+
+			},
+			error : function() {
+			}
+		});
+
+	}
+
+	function addstep3() {
+		$.ajax({
+			url : "./success.html",
+			dataType : "text",
+			type : "POST",
+			success : function(msg) {
+				$("#contentList").html(msg);
+			},
+			error : function() {
+			}
+		});
+	}
+
+	function addUser() {
+		var username = $('#username').val();
+		var password = $('#password').val();
+		var email = $('#email').val();
+		check = addUsercheck();
+		alert(password);
+		password = hex_md5(password);
+	   alert(password);
+		// alert(man);
+		checkYanZheng();
+		if (check) {
+			var dataStr = "userName=" + username + "&password=" + password
+					+ "&email=" + email;
+			$.ajax({
+				url : "user!addUser.do",
+				data : dataStr,
+				type : "POST",
+				dataType : "json",
+				success : function(result) {
+					if (result.msg == 'ok') {
+						window.location.href = httpURL
+								+ "/user/adduser.html?step=2&email=" + email;
+					} else {
+						alert("注册失败！！");
+					}
+				}
+			});
+		} else {
+			//alert("输入不正确！！");
+		}
+
+		// alert(username+"::"+password+"::"+email);
+	}
+	function addUsercheck() {
+		var username = $('#username').val();
+		if (username == "") {
+			alert("用户名不能为空！！");
+			return false;
+		}
+		var password = $('#password').val();
+		if (password == "") {
+			alert("密码不能为空！！");
+			return false;
+		}
+		var repassword = $('#repassword').val();
+		if (repassword != password) {
+			return false;
+		}
+		var email = $('#email').val();
+
+		if (email == "") {
+			alert("邮箱不能为空！！");
+			return false;
+		}
+
+		return true;
+	}
+	function checkPass(password) {
+		var repassword = $('#repassword').val();
+		//var password = $('#password').val();
+		if (password == '') {
+			$('#passwordmessage').html("没有输入密码").addClass("error");
+			checked = false;
+			addClass($('#password'), "resister-input-error");
+		} else {
+			$('#passwordmessage').html("ok").addClass("right");
+			checked = true;
+			removeClass($('#password'), "resister-input-error");
+			addClass($('#password'), "resister-input");
+		}
+
+		if (repassword != "") {
+			if (password != repassword) {
+				removeClass($('#passwordmessage'), "right");
+				$('#passwordmessage').html("两次输入的密码不相同").addClass("error");
+
+				addClass($('#password'), "resister-input-error");
+				checked = false;
+			} else {
+				checkTwoPasswordOk();
+			}
+		}
+	}
+
+	function checkTwoPasswordOk() {
+		checked = true;
+		removeClass($('#repassword'), "resister-input-error");
+		removeClass($('#password'), "resister-input-error");
+		//	addClass($('#repassword'), "resister-input");
+		//addClass($('#password'), "resister-input");
+		$('#passwordmessage').html("ok").addClass("right");
+		$('#repasswordmessage').html("ok").addClass("right");
+	}
+
+	function checkRepass(repassword) {
+		//var repassword = $('#repassword').val();
+		var password = $('#password').val();
+		if (repassword == '') {
+			$('#repasswordmessage').html("没有输入密码").addClass("error");
+			checked = false;
+			addClass($('#repassword'), "resister-input-error");
+		}
+		if (password != repassword) {
+			removeClass($('#repasswordmessage'), "right");
+			$('#repasswordmessage').html("两次输入的密码不相同").addClass("error");
+			checked = false;
+			addClass($('#repassword'), "resister-input-error");
+		} else {
+			checkTwoPasswordOk();
+		}
+	}
+
+	function checkUser(username) {
+		if (username == '') {
+			$('#usernamemessage').html("用户名不能为空!!").addClass("error");
+			addClass($('#username'), "resister-input-error");
+
+		} else {
+			$('#usernamemessage').html("ok!!").addClass("right");
+			removeClass($('#username'), "resister-input-error");
+		}
+	}
+
+	function checkEmail(email) {
+
+		if (email
+				.search(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/) != -1) {
+			$('#emailmessage').html("ok!!").addClass("right");
+			checked = true;
+			removeClass($('#email'), "resister-input-error");
+			addClass($('#email'), "resister-input");
+		} else {
+			$('#emailmessage').html("邮箱格式不对!!").addClass("error");
+			checked = false;
+			//removeClass($('#email'), "resister-input");
+			addClass($('#email'), "resister-input-error");
+		}
+	}
+
+	function removeClass(node, cla) {
+		node.removeClass(cla);
+	}
+	function addClass(node, cla) {
+		node.addClass(cla);
+	}
+
+	function loadimage() {
+		var timenow = new Date().getTime();
+		$("#yanzheng").attr("src",
+				httpURL+"/servlet/ImageServlet?d=" + timenow);
+		return false;
+	}
+
+	function checkYanZheng() {
+		var code = $("#code").val();
+
+		$
+				.ajax({
+					url : httpURL+"/edit/content!checkYanZhengMa.do",
+					type : 'post',
+					dataType : "json",
+					async : false,
+					success : function(msg) {
+
+						if (code.toLocaleLowerCase() != msg.piccode
+								.toLocaleLowerCase()) {
+							alert("验证码不对" + msg.piccode);
+						}
+					}
+				});
+		loadimage();
+	}
+</script>
+<style type="text/css">
+.error {
+	color: red;
+}
+
+.right {
+	color: green;
+}
+</style>
+</head>
+
+<body class="allback">
+
+</body>
+</html>

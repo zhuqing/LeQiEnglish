@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+<head>
+<title>乐其软件 ，乐在其中</title>
+
+<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+<meta http-equiv="description" content="this is my page">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+<link rel="stylesheet" type="text/css" href="./css/all.css">
+<link rel="stylesheet" type="text/css" href="./js/showDialog.css">
+<script type="text/javascript" src="./js/jquery.js">
+	
+</script>
+<script type="text/javascript" src="./js/md5.js">
+	
+</script>
+<script type="text/javascript" src="./js/leqi.js">
+	
+</script>
+<script type="text/javascript" src="./js/showDialog.js">
+	
+</script>
+<script type="text/javascript" src="../js/comment.js"> </script>
+<script type="text/javascript">
+	var currentPage;
+	var pageSize;
+	var allcount;
+	var allPage;
+	var list;
+
+	$(document).ready(function() {
+		//setHeader("./header.html");
+	//	addTable(httpURL+"/content/table.html");
+	//alert("learne.html");
+	addTable(httpURL+"/content/table.html",true,null);
+		
+		//createTip();
+	});
+
+	function turnPage(page, size) {
+		$.ajax({
+			url : "./learne/learne_getAllLession!getAllLession.do",
+			data : "page=" + page + "&pageSize=" + size,
+			type : "POST",
+			dataType : "json",
+			success : function(result) {
+			  
+				currentPage = result.currentPage;
+				pageSize = result.pageSize;
+				allPage = result.allPage;
+				allCount = result.allCount;
+				list = result.list;
+				setPage(size, currentPage, allPage, allCount);
+				createTable(list);
+			}
+		});
+	}
+
+	function createTable(list) {
+
+		var tbody = $('#contentList');
+		for ( var i = 0; i < list.length; i++) {
+			var content = list[i];
+			var tra = $('<tr></tr>');
+			var tba = $('<td width="100%"></td>');
+
+			var newTable = $("<table class='tableContentList'></table>");
+
+			// var newtitleTb = $('');
+			var title = "<h4 class='title'>"
+					+ ((currentPage - 1) * pageSize + i + 1) + "."
+					+ content.title + "</h4>";
+			var newtitletr = $("<tr><td align='left'><a  href='#' onclick='reader("
+					+ content.id
+					+ ","
+					+ content.type
+					+ ","
+					+ i
+					+ ");return false;'>" + title + "</a></td></tr>");
+			newTable.append(newtitletr);
+
+			var newcontenttr = $("<tr><td>" + "   " + content.content
+					+ "</td></tr>");
+			newTable.append(newcontenttr);
+
+			var down = "评论(" + content.recomment + ")  "
+					+ "<a href='#' onclick='reader(" + content.id + ","
+					+ content.type + "," + i + ");return false;'>阅读</a> ("
+					+ content.reader + ")" + "<a href='#' onclick='reader("
+					+ content.id + "," + content.type + "," + i
+					+ ")'>查看全文>></a>";
+			var newdowntr = $("<tr><td align='right'>" + down + "</td></tr>");
+			newTable.append(newdowntr);
+			tba.append(newTable);
+
+			tra.append(tba);
+			tbody.append(tra);
+		}
+	}
+
+	function setFoot() {
+		var newTable = $("<table class='tableContentList'></table>");
+		var newtitletr = $("<tr><td align='center'></td></tr>");
+	}
+
+	function reader(id, type, index) {
+
+		window.location.href = "./lesson.html?type=" + type + "&id=" + id
+				+ "&path=" + encodeURIComponent(list[index].path);
+	}
+	function turnpage(page) {
+		var tbody = $('#contentList tbody');
+		tbody.remove();
+		turnPage(page, 20);
+	}
+</script>
+</head>
+
+<body>
+</body>
+</html>

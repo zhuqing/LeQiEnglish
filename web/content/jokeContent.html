@@ -1,0 +1,163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+  <head>
+    <title>jokeConent.html</title>
+	
+    <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+    <meta http-equiv="description" content="this is my page">
+    <meta http-equiv="content-type" content="text/html; charset=GB18030">
+        <link rel="stylesheet" type="text/css" href="../css/all.css">
+    <script type="text/javascript" src="../js/jquery.js"> </script>
+    <script type="text/javascript" src="../js/leqi.js"> </script>
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+<script type="text/javascript">
+ $(document).ready(function(){
+         getAjax();
+     });
+     function addjoke(list){
+        for(var i = 0 ; i < list.length ; i++){
+            var joke = list[i];
+            var tab = $("<tr><td></td></tr>");
+            var newTable = $("<table class='tableContentList'><tbody></tbody></table>");
+            var newtitletr = $("<tr><td></td></tr>");
+            var title ="<h3 class='title'>"+joke.title+"</h3>";
+            newtitletr.html(title);
+            newTable.append(newtitletr);
+            
+            var content = $("<tr><td align='center'></td></tr>");
+            content.html(joke.content);
+            var img = content.find("img[src]");
+            if(img!=null){
+             var src = img.attr("src");
+             if(src!=undefined){
+	              var arrSrc = src.split("/");
+	             var imag = arrSrc[arrSrc.length-2];
+	             var arrSrc2 = src.split(imag);
+	             var newSrc = arrSrc2[0]+imag+"small"+arrSrc2[1];
+	             img.attr("src",newSrc);
+	             img.click(function(){
+	                   var ss = this.getAttribute("src");
+	                 
+	                   if(ss!=undefined){
+	                     var ssArr = ss.split("/");
+	                     var ssimag = ssArr[ssArr.length-2];
+	                      var index= ss.indexOf("small",0);
+	                      if(index>0){
+	                     var ssArr2 = ss.split(ssimag);
+	                     var newSs = ssArr2[0]+ssimag.substring(0,ssimag.length-5)+ssArr2[1];
+	                     this.setAttribute("src",newSs);
+	                     }else{
+	                      var ssArr2 = ss.split(ssimag);
+	                     var newSs = ssArr2[0]+ssimag+"small"+ssArr2[1];
+	                     this.setAttribute("src",newSs);
+	                     }
+	                   }
+	             });
+             }
+            
+            }
+           
+            
+            newTable.append(content);
+           // var divshare = $(getShare(url,text));
+           // divshare.attr("data","{'url':http://localhost/duoduoroom/content/jokeContent.html,'text':"+joke.content+"}");
+            var pinglun = $("<tr><td align='right'>"+"评论("+joke.recomment+"),阅读("+joke.reader+")"+getShare('http://localhost/duoduoroom/content/jokeContent.html',joke.content)+"</td></tr>");
+          //  pinglun.append(divshare);
+            newTable.append(pinglun);
+            //newTable.append(divshare);
+            // newTable.append(share);
+            
+            tab.append(newTable);
+             var height = $("<table style='height:20px'></table>");
+             tab.append(height);
+           // tab.append(joke.content);
+            $("#jokecontent").append(tab);
+        }
+     }
+     
+     var scrollH = 0;
+     var currentPage=1;
+     var isrun = false;
+     $(window).scroll(function(){
+        var bot = 50;
+       
+       if((bot + $(window).scrollTop()) >= ($(document).height() - $(window).height()) && $(window).scrollTop() > scrollH){
+          scrollH=$(window).scrollTop();
+          if(!isrun){
+           getAjax();
+          // alert(currentPage);
+          }
+          
+         // 
+       }
+     });
+     
+     function getAjax(){
+        isrun = true;
+        $.ajax({
+            url:"../edit/content!getJoke.do",
+            data:"currentPage="+currentPage+"&size=60",
+            dataType:"json",
+            type:"POST",
+            success:function(msg){
+              addjoke(msg.list);
+              $(window).scrollTop(scrollH);
+              if(msg.allPage!=currentPage){
+                isrun = false;
+              }
+               currentPage++;
+            },
+            error:function(){
+            }
+          });
+         
+     }
+</script>
+
+<!-- Baidu Button BEGIN -->
+
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=0" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->
+  </head>
+  
+  <body>
+   <table style="width:100%;height:100%;table-layout: fixed;">
+      <tr>
+      <td  style="width:15%;height:100%">
+      <!-- left -->
+      </td>
+        <td style="width:50%;height:100%">
+       <!-- middle -->
+      <table style="width:100%;table-layout: fixed;">
+        <tr>
+          <td >
+            <!-- header -->
+            
+          </td>
+        </tr>
+        
+        <tr>
+         <td id="body">
+           <!-- body -->
+           <table id="jokecontent" style="width:100%;height:100%;">
+              
+           </table>
+           
+         </td>
+        </tr>
+      </table>
+      </td>
+       <td style="width:20%;height:100%">
+      
+       </td>
+        <td style="width:15%;height:100%"> 
+      <!-- right -->
+      </td>
+      </tr>
+    </table>
+  </body>
+</html>

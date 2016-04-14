@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN">
+<html>
+    <head>
+        <title>乐琪英语 ，乐在其中</title>
+
+        <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
+        <meta http-equiv="description" content="this is my page">
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta name="baidu-site-verification" content="72799a1533f9f8758c3bffd228047e8c"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0, user-scalable=yes" />  
+        <link rel="stylesheet" type="text/css" href="./css/style.css">
+        <link rel="stylesheet" type="text/css" href="./css/all.css">
+        <link rel="stylesheet" type="text/css" href="./js/showDialog.css">
+        <link rel="stylesheet" type="text/css" href="./css/gridview.css">
+        <script type="text/javascript" src="./js/jquery.js"></script>
+        <script type="text/javascript" src="./js/md5.js"></script>
+        <script type="text/javascript" src="./js/leqi.js"></script>
+        <script type="text/javascript" src="./js/gridview.js"></script>
+        <script type="text/javascript" src="./js/dateutil.js"></script>
+        <script type="text/javascript" src="./js/json2.js"></script>
+        <script type="text/javascript" src="./js/showDialog.js"></script>
+        <script type="text/javascript" src="./js/jquery.cookie.js"></script>
+        <link rel="stylesheet" href="./css/common.css" type="text/css" />
+        <script type="text/javascript" src="./js/xheditor.js"></script>
+        <style>
+            #content_all{
+
+                width: 100%;
+                position:relative;
+                top:60px;
+                float: left;
+            }
+            #content_left{
+                float:left;
+                width: 5%;
+            }
+            #content_right{
+                float: right;
+
+                width:5%;
+
+            }
+
+            #content_center{
+                width: 100%;
+
+                float:left;
+
+            }
+
+            #clear{
+                clear: both;
+            }
+
+            #content_bottom{
+                width: 100%;
+
+            }
+        </style>
+        <script type="text/javascript">
+
+            var currentPage;
+            var size;
+            var allcount;
+            var allPage;
+
+            $(document).ready(function() {
+                //	addTable(httpURL+"/content/table.html",true,null);
+                setContent2IdByUrl(httpURL + "/header.html", "content_header");
+                setContent2IdByUrl(httpURL + "/bottom.html", "content_bottom");
+                turnPage(1, 24);
+            });
+
+            function turnPage(page, size) {
+                $.ajax({
+                    url: httpURL + "/content/getContentList",
+                    data: "currentPage=" + page + "&size=" + size+"&type=0",
+                    type: "POST",
+                    dataType: "json",
+                    success: function(result) {
+                        currentPage = result.currentPage;
+                        size = result.pageSize;
+                        allPage = result.allPage;
+                        allCount = result.allCount;
+                        var list = result.list;
+                        setPage(size, currentPage, allPage, allCount);
+                        //createTable(list,size,currentPage,allCount);
+                        createGridView($("#content_content"), list);
+                    }
+                });
+            }
+
+
+
+        </script>
+    </head>
+
+    <body>
+        <div id="content_header">
+
+        </div>
+        <div id="content_all" >
+
+            <div id="content_content">
+
+            </div>
+            <div id="pages" class="page_nav">
+
+            </div>
+            <div id="content_bottom">
+
+            </div>
+        </div>
+
+    </body>
+</html>
