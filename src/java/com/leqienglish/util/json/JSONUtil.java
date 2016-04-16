@@ -19,9 +19,13 @@ public class JSONUtil {
     }
 
     public static String okMessage() {
+        return okJSONObject().toString();
+    }
+    
+    public static JSONObject okJSONObject(){
         JSONObject json = new JSONObject();
         json.put("msg", "ok");
-        return json.toString();
+        return json;
     }
 
     /**
@@ -73,5 +77,13 @@ public class JSONUtil {
         }
 
         return new JSONObject();
+    }
+
+    public static JSONObject createJSONObject(JSONObject jsonObject, String key, Object value) {
+        if (jsonObject == null) {
+            jsonObject = new JSONObject();
+        }
+        jsonObject.put(key, value);
+        return jsonObject;
     }
 }

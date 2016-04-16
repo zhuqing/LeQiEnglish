@@ -114,36 +114,30 @@
             }
 
             function uploadImage() {
-                $('#fileName').val($('#icon').val());
+                $('#fileName').val($('#file').val());
                 $.ajaxFileUpload
                         (
                                 {
-                                    url: httpURL + "/code/fetch",
-                                    data: {fileName: $('#icon').val()},
+                                    url: httpURL + "/upload",
                                     secureuri: false,
-                                    fileElementId: 'icon',
+                                    fileElementId: 'file',
                                     dataType: 'json',
-                                    success: function (data, status)
+                                    
+                                    type: 'POST',
+                                    success: function (data)
                                     {
-                                        if (typeof (data.error) != 'undefined')
+                                         alert(data);
+                                        if (data.msg=="ok")
                                         {
-                                            if (data.error != '')
-                                            {
-                                                alert(data.error);
-                                            } else
-                                            {
-                                                alert(data.msg);
-                                            }
-                                        } else {
-                                            var imagePath = data.path;
+                                             var imagePath = data.path;
                                             $('#imageSrc').attr("src", httpURL + "/" + imagePath);
                                             $('#fileName').val(imagePath);
 
-                                        }
+                                        } 
                                     },
                                     error: function (data, status, e)
                                     {
-                                        alert(e);
+                                        alert("上传出错,"+status+" "+data.msg);
                                     }
                                 }
                         );
@@ -260,9 +254,9 @@
                         <tr>
 
                             <td colspan="2"><img id="imageSrc"
-                                                 src="../duoduoroom/file/2014927/bc49bee3-9a26-47cb-803c-61ad13880325.jpg"
-                                                 width="100px" height="100px" /> <input type="file" id="icon"
-                                                 name="icon" size="15" enctype="multipart/form-data"
+                                                 src=""
+                                                 width="100px" height="100px" /> <input type="file" id="file"
+                                                 name="file" size="15" 
                                                  onchange="uploadImage()" maxlength="100" /> <input type="hidden"
                                                  id="fileName" name="fileName" value="" />
                             </td>

@@ -354,20 +354,20 @@ public class ContentBizImpl implements ContentBiz {
     public String uploadFile(InputStream is, String fileName) {
         // TODO Auto-generated method stub
         JSONObject json = new JSONObject();
-        String filePath = FileUtil.getDirPath() + FileUtil.getRadomName(fileName);
-
-        try {
-            if (!FileUtil.saveFile(is, filePath)) {
-                return JSONUtil.errMessage();
-            }
-            json.put("msg", "ok");
-            int index = filePath.indexOf("file/");
-            json.put("path", filePath.substring(index, filePath.length()));
-        } catch (Exception e) {
-            json.put("err", "upload error!!!");
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+       // String filePath = FileUtil.getDirPath() + FileUtil.getRadomName(fileName);
+//
+//        try {
+//            if (!FileUtil.saveFile(is, filePath)) {
+//                return JSONUtil.errMessage();
+//            }
+//            json.put("msg", "ok");
+//            int index = filePath.indexOf("file/");
+//            json.put("path", filePath.substring(index, filePath.length()));
+//        } catch (Exception e) {
+//            json.put("err", "upload error!!!");
+//            // TODO Auto-generated catch block
+//            e.printStackTrace();
+//        }
         return json.toString();
     }
 

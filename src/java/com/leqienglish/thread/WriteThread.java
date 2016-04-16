@@ -46,35 +46,35 @@ public class WriteThread extends Thread {
 	public void run() {
 		StringBuffer sbf = new StringBuffer();
 		sbf.append(statement);
-
-		try {
-			//File file = new File(FileUtil.getPath());
-			//FileWriter fw = new FileWriter(file);   
-			String path = FileUtil.getPath();
-			
-			FileChannel fc = new RandomAccessFile(path, "rw").getChannel();
-			byte[] bs = sbf.toString().getBytes();
-			Long length = (long) bs.length;
-			
-			content.setStartIndex(fc.size());
-			content.setContentLength(length);
-			content.setContentPath(path);
-			fc.position(content.getStartIndex()); // 移到文件尾
-			fc.write(ByteBuffer.wrap(bs));
-			fc.close();
-
-			Session session = sessionFactory.openSession();
-                       // session.
-			// 步骤五：开启事务
-			Transaction transaction = session.beginTransaction();
-
-			session.update(this.content);
-			transaction.commit();
-			session.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//
+//		try {
+//			//File file = new File(FileUtil.getPath());
+//			//FileWriter fw = new FileWriter(file);   
+//			//String path = FileUtil.getPath();
+////			
+////			FileChannel fc = new RandomAccessFile(path, "rw").getChannel();
+////			byte[] bs = sbf.toString().getBytes();
+////			Long length = (long) bs.length;
+////			
+////			content.setStartIndex(fc.size());
+////			content.setContentLength(length);
+////			content.setContentPath(path);
+////			fc.position(content.getStartIndex()); // 移到文件尾
+////			fc.write(ByteBuffer.wrap(bs));
+////			fc.close();
+//
+//			Session session = sessionFactory.openSession();
+//                       // session.
+//			// 步骤五：开启事务
+//			Transaction transaction = session.beginTransaction();
+//
+//			session.update(this.content);
+//			transaction.commit();
+//			session.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
 	}
 

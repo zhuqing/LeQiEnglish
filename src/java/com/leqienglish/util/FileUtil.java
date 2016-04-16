@@ -301,24 +301,24 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    public static String getPath() throws IOException {
-
-//        if (FileUtil.currentPath == null) {
-//            FileUtil.currentPath = createNewFile();
-//            FileUtil.writeCount = 0;
-//
-//            return FileUtil.currentPath;
-//        }
-//
-//        if (FileUtil.writeCount < FileUtil.fileWriteCountLimit) {
-//            return FileUtil.currentPath;
-//        }
-//
-//        if (fileSize(currentPath) > FileUtil.fileSizeLimit) {
-//            FileUtil.currentPath = createNewFile();
-//            FileUtil.writeCount = 0;
-//        }
-        return createNewFile();
+    public static String getPath(String fileName,String type) throws IOException {
+        String newFileName = UUID.randomUUID().toString();
+        if(fileName.contains(".")){
+           int index =  fileName.lastIndexOf(".");
+           newFileName += fileName.substring(index);
+        }
+        
+        return createNewFile(newFileName , type);
+    }
+    
+    /**
+     * 生成可以在web中应用的路径
+     * @param path
+     * @return 
+     */
+    public static String getWebPath(String path){
+        int index = path.indexOf("file");
+        return path.substring(index);
     }
 
     /**
@@ -327,15 +327,10 @@ public class FileUtil {
      * @return
      * @throws IOException
      */
-    private static String createNewFile() throws IOException {
+    private static String createNewFile(String fileName,String type) throws IOException {
 
-        String filePath = getDirPath() + UUID.randomUUID().toString();
-        //System.out.println(filePath + "txt");
-        File file = new File(filePath);
-        if (!file.exists()) {
-            file.createNewFile();
-        }
-
+        String filePath = getDirPath(type) + fileName;
+       
         return filePath;
     }
 
@@ -344,19 +339,19 @@ public class FileUtil {
      *
      * @return
      */
-    public static String getDirPath() {
+    public static String getDirPath(String type) {
 
         if (direction == null) {// 获取当前环境下的路径
             String fule = FileUtil.class.getClassLoader().getResource("/")
                     .toString();
             int beginIndex = fule.indexOf("/");
             int endIndex = fule.indexOf("WEB-INF");
-            direction = fule.substring(beginIndex, endIndex) + "file/";
-            System.out.println(direction + "createNewFile direction==null");
+            direction = fule.substring(beginIndex, endIndex) + "file/"+type+"/";
+           
         }
 
         String dirPath = direction + createSubDir();
-        System.out.println(dirPath);
+     
         File file = new File(dirPath);
         file.mkdirs();
 
@@ -373,7 +368,7 @@ public class FileUtil {
         dir += Calendar.getInstance().get(Calendar.YEAR);
         dir += (Calendar.getInstance().get(Calendar.MONTH) + 1);
         dir += Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/";
-        System.out.println("dir " + dir);
+       
         return dir;
     }
 
