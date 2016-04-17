@@ -70,7 +70,7 @@
                 $.ajax({
                     url: httpURL + "/content/insert",
                     type: 'POST',
-                    data: {mycode: mycode, title: title, type: type, content: message, fromwhere: fromwhere, fileName: fileName, catalogs: catalogs, summary: summary, words: words},
+                    data: {mycode: mycode, title: title, type: type, content: message, fromwhere: fromwhere, iconPath: fileName, catalogs: catalogs, summary: summary, words: words},
                     dataType: 'json',
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     success: function (msg) {
@@ -122,7 +122,7 @@
                                     secureuri: false,
                                     fileElementId: 'file',
                                     dataType: 'json',
-                                    
+                                    data:{type:"image"},
                                     type: 'POST',
                                     success: function (data)
                                     {

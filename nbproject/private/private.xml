@@ -4,54 +4,35 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/EhcacheUtil.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/CommentDaoImpl.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/dao/ContentDao.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/CodeAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/ParentAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/TitleTipDaoImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/UserLearnE.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/DictAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/mongodb-context.xml</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/User.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/DictDaoImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Word.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/applicationContext.xml</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/biz/ContentBiz.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/VedioAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/bizimpl/TitleTipBizImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/UpLoad.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/springMVC-servlet.xml</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Catalog.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/CatalogAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/RelationShip.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/LeqiDTO.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/InsertContentAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/ContentDaoImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/URLAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/CatalogAndContent.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/CatalogDaoImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/GetImage.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/LearneAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Content.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/dao/CatalogDao.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/TitleTipAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/log/LOGGER.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Content.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/FileUtil.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/TampletDaoImpl.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/mongodb-context.xml</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/UpLoadAction.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/ContentTypeEnum.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/RelationShipDaoImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/UserDaoImpl.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/edit/audioPlayer.html</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/dao/TempDao.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Word.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/LeQiType.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/applicationContext.xml</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/web/edit/edit.html</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/PageParam.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/web.xml</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/springMVC-servlet.xml</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Catalog.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/bizimpl/DictBizImpl.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/cn/duoduo/action/scheduel/EhcacheScheduel.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/edit/readingEdit.html</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/RelationShip.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/bizimpl/ContentBizImpl.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/LeqiDTO.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/ContentAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Entity.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/UserAction.java</file>
-            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/dao/CommentDao.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/bar-ui/script/bar-ui.js</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/thread/WriteThread.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/ContentDaoImpl.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/json/JSONUtil.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/CatalogDaoImpl.java</file>
         </group>
     </open-files>
 </project-private>

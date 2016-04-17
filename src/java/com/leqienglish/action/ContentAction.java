@@ -4,11 +4,14 @@ import com.leqienglish.biz.ContentBiz;
 import com.leqienglish.biz.DictBiz;
 import com.leqienglish.entity.Content;
 import com.leqienglish.entity.ContentTypeEnum;
+import com.leqienglish.entity.PageParam;
 import com.leqienglish.util.Util;
 //import com.leqienglish.util.log.LOGGER;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +26,15 @@ public class ContentAction extends ParentAction {
     private static final String MESSAGE = "message";
     private static final String SUMMARY = "summary";
     private static final String AUTHER = "author";
-    private static final String FROM = "from";
+    private static final String FROM_WHERE = "fromWhere";
     private static final String TYPE = "type";
     private static final String CONTENT = "content";
+    private static final String ICON_PATH = "iconPath";
+    private static final String AUDIO_PATH = "audioPath";
 
-    // private LOGGER logger = LOGGER.instance(ContentAction.class);
+    // private LOGGER logger = Log
+    private static final Log LOG = LogFactory.getLog(ContentAction.class);
+
     private ContentBiz contentBiz;
     private DictBiz dictBiz;
 
@@ -36,16 +43,21 @@ public class ContentAction extends ParentAction {
     public @ResponseBody
     String insertContect(HttpServletRequest req, HttpServletResponse resp) {
         Content content = new Content();
-        content.setId(Util.getID());
-        content.setTitle((String) req.getParameter(ContentAction.TITLE));
-        content.setContent((String) req.getParameter(ContentAction.CONTENT));
-        String type = (String) req.getParameter(TYPE);
+        
+        content.setTitle(this.getParmeter(ContentAction.TITLE, req));
+        content.setContent(this.getParmeter(ContentAction.CONTENT, req));
+        content.setIconPath(this.getParmeter(ContentAction.ICON_PATH, req));
+        content.setAudioPath(this.getParmeter(AUDIO_PATH, req));
+        content.setFromwhere(this.getParmeter(FROM_WHERE, req));
+       
+        content.setSummary(this.getParmeter(SUMMARY, req));
+        
+        content.setUserId(this.getLoginedUserId(req));
+        String type = this.getParmeter(TYPE, req);
         if (type == null) {
             type = ContentTypeEnum.ARTICLE.name();
         }
         content.setContentType(ContentTypeEnum.valueOf(type));
-
-        System.err.println(content.getId());
 
         return this.getContentBiz().saveContent(content);
     }
@@ -59,13 +71,22 @@ public class ContentAction extends ParentAction {
 
     /**
      * 标题是否已经存在
+     *
      * @param title
-     * @return 
+     * @return
      */
     @RequestMapping(value = "/hasTitle/{title}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public @ResponseBody
     String hasTitle(@PathVariable("title") String title) {
         return this.getContentBiz().hasTitle(title);
+    }
+    
+        @RequestMapping(value = "/getContentList/{type}/{page}/{size}", method = {RequestMethod.GET,RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+    public @ResponseBody String getContentList(@PathVariable("type") String type,@PathVariable("page") int page,@PathVariable("size") int size,HttpServletRequest req) {
+        PageParam pageParam = this.createPage(page,size);
+        
+        return this.contentBiz
+                .getAllContentByType(pageParam, ContentTypeEnum.valueOf(type), null);
     }
 
 //
@@ -83,44 +104,7 @@ public class ContentAction extends ParentAction {
 //
 //        return "ok";
 //    }
-//
-//    /**
-//     * 插入数据
-//     *
-//     * @param type
-//     * @return
-//     */
-//    private Long insert(int type) {
-//        HttpServletRequest request = ServletActionContext.getRequest();
-//        HttpSession session = request.getSession(true);
-//        User user = (User) session.getAttribute(LeQiType.LOGIN_USER);
-//        if (!this.getMycode().equals("sxzq0110151510")) {
-//            return null;
-//        }
-//        user = new User();
-//        user.setId(10L);
-//        if (user == null) {
-//            return null;
-//        } else {
-//
-//            Content content = new Content();
-//            content.setTitle(this.getTitle());
-//            content.setContenttype(type);
-//            content.setReader(0);
-//            content.setRecomment(0);
-//            content.setId(Util.getID());
-//            content.setCreateTime(Calendar.getInstance().getTimeInMillis() + "");
-//            content.setFromwhere(fromwhere);
-//            content.setIconPath(fileName);
-//            content.setUserId(user.getId());
-//            content.setSummary(this.getSummary());
-//
-//            this.contentBiz.addContent(content, this.getContent(),
-//                    this.catalogs, type);
-//            return content.getId();
-//
-//        }
-//    }
+
 //
 //    public String insertFamousWord() {
 //        this.setTitle("famous");
@@ -163,12 +147,7 @@ public class ContentAction extends ParentAction {
 //
 //        return "ok";
 //    }
-//    @RequestMapping(value = "/getContentList", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-//    public String getContentList() {
-//        PageParam page = this.createPage();
-//        return this.contentBiz
-//                .getAllContentByType(page, LeQiType.WenZhang, null);
-//    }
+
 //
 //    public String getContentListByCatalogId() {
 //        return "ok";
