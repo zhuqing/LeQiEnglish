@@ -6,6 +6,9 @@
         <script type="text/javascript" src="../js/jquery.js">
 
         </script>
+        <script type="text/javascript" src="../js/dateutil.js">
+
+        </script>
         <script type="text/javascript" src="../js/md5.js">
 
         </script>
@@ -34,6 +37,7 @@
         <script type="text/javascript">
             $(pageInit);
             var titleErro = false;
+            var times = 0;
             function pageInit()
             {
                 loadimag($("#image"));
@@ -80,6 +84,8 @@
                     // return;
                 }
                 // alert(request.QueryString("piccode"));
+                message = createContent();
+                 $('#message').val(message);
                 $.ajax({
                     url: httpURL + "/content/insert",
                     type: 'POST',
@@ -103,6 +109,16 @@
 
 
                 });
+            }
+            
+            function createContent(){
+                var str ="";
+                for(var i = 0 ;i < times ; i++){
+                    str +=$("#realtime"+i).val()+"<>"+$("#subtitle"+i).text()+"<br/>";
+                    
+                }
+                
+                return str;
             }
 
             function cancel() {
@@ -231,14 +247,20 @@
             
             function makePoint(){
                  var posi = window.player.position;
-                 $("#timePoint"+index).append( "<input id='realtime"+index+"' name='realtime"+index+"' value='"+posi+"'/>");
+                 
+                 $("#timePoint"+index).append( "<input id='realtime"+index+"' name='realtime"+index+"' value='"+getTime(posi)+"'/>");
                  index++;
             }
             function convertText(){
                  var content =  $("#message").val();
                  content = content.replace(/<[^>]+>/g,"");
                  var array = content.split(".");
+                 times = 0;
                  for(var i = 0 ; i < array.length ; i++){
+                     if(array[i].length===0){
+                         return;
+                     }
+                     times++;
                        $("#timePoint").append( "<span id='timePoint"+i+"'></span><span id='subtitle"+i+"'>"+array[i]+".</span><br/>");
                  }
             }
