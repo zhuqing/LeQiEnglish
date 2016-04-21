@@ -9,10 +9,14 @@
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/dao/CatalogDao.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Content.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/FileUtil.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/index.html</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/content/listen.html</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/TampletDaoImpl.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/mongodb-context.xml</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/content/readContent.html</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/UpLoadAction.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/ContentTypeEnum.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/js/dateutil.js</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/web/edit/audioPlayer.html</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/dao/TempDao.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Word.java</file>
@@ -23,12 +27,14 @@
             <file>file:/Users/zhuleqi/work/LeQiEnglish/web/WEB-INF/springMVC-servlet.xml</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/Catalog.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/bizimpl/DictBizImpl.java</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/js/gridview.js</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/web/edit/readingEdit.html</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/RelationShip.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/bizimpl/ContentBizImpl.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/entity/LeqiDTO.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/action/ContentAction.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/web/bar-ui/script/bar-ui.js</file>
+            <file>file:/Users/zhuleqi/work/LeQiEnglish/web/js/soundmanager2.js</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/thread/WriteThread.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/daoimpl/ContentDaoImpl.java</file>
             <file>file:/Users/zhuleqi/work/LeQiEnglish/src/java/com/leqienglish/util/json/JSONUtil.java</file>

@@ -35,7 +35,7 @@
             var path;
             var iconPath;
             var recommentCount;//评论数
-            $(document).ready(function() {
+            $(document).ready(function () {
 
                 setContent2IdByUrl(httpURL + "/header.html", "content_header");
                 setContent2IdByUrl(httpURL + "/bottom.html", "content_bottom");
@@ -44,13 +44,13 @@
                 $("#email").val("");
                 $("#username").val("");
                 $("#message").val("");
-               // type = GetQueryString("type");
+                // type = GetQueryString("type");
                 id = GetQueryString("id");
-               // path = GetQueryString("path");
+                // path = GetQueryString("path");
 
                 // alert(path);
                 // var title = GetQueryString("title");
-                if ( id == null) {
+                if (id == null) {
                     window.location.href = httpURL + "/index.html";
                     return;
                 }
@@ -61,7 +61,7 @@
                     data: "id=" + id,
                     dataType: "json",
                     type: "POST",
-                    success: function(msg) {
+                    success: function (msg) {
                         if (msg.msg != "error") {
                             $("#title_txt").html(msg.title);
                             document.title = msg.title;
@@ -84,7 +84,7 @@
                             $("#content_content").mouseup(getSelectionText);
                         }
                     },
-                    error: function() {
+                    error: function () {
                     }
                 });
 
@@ -97,7 +97,7 @@
                     type: 'post',
                     dataType: "json",
                     async: false,
-                    success: function(msg) {
+                    success: function (msg) {
                         var arr = msg.list;
 
                         for (var i = 0; i < arr.length; i++) {
@@ -157,7 +157,7 @@
                     data: "id=" + id + "&reCommentId=" + reader,
                     type: "POST",
                     dataType: "json",
-                    success: function(msg) {
+                    success: function (msg) {
                         //alert(msg.msg);
                     }
                 });
@@ -174,7 +174,7 @@
                     data: "type=0",
                     type: "POST",
                     dataType: "json",
-                    success: function(msg) {
+                    success: function (msg) {
                         if (msg.msg != "error") {
                             var contents = msg.list;
                             for (var i = 0; i < contents.length; i++) {
@@ -192,7 +192,7 @@
                     data: "id=" + id + "&type=" + type,
                     dataType: "json",
                     type: "POST",
-                    success: function(msg) {
+                    success: function (msg) {
                         //alert(msg);
                         if (msg.per == 1) {
                             $("#per").html("<a href='#' onclick='gotoNewPage(" + msg.perobj.id + ");return false;'>&lt;&lt;" + msg.perobj.title + "</a>");
@@ -206,7 +206,7 @@
                             $("#next").html("没有了");
                         }
                     },
-                    error: function() {
+                    error: function () {
                     }
                 });
             }
@@ -277,7 +277,7 @@
                     data: "client_id=wYFruBcLqKTRfCbXeQNWQ72w&from=en&to=zh&q=" + selectTxt,
                     type: "GET",
                     dataType: "jsonp",
-                    success: function(msg) {
+                    success: function (msg) {
                         if (undefined === msg.trans_result) {
                             // alert(msg.error_msg);
                             return;
@@ -316,7 +316,7 @@
                     'left': left - (tips.length * 13 / 2) + 'px'
 
                 }).show();
-                setTimeout(function() {
+                setTimeout(function () {
                     $('#tips').fadeOut();
                 }, (time * 1000));
             }
@@ -429,10 +429,10 @@
                 margin-bottom: 10px;
                 margin-top: 10px;
                 font-size: 14px;
-                font-family:initial;
-                //  padding: 10px 10px 10px 10px;
-                // background-color: #D1DEEF;
-                // border: 2px #3D3D3D dotted;
+                font-family:initial
+                    //  padding: 10px 10px 10px 10px;
+                    // background-color: #D1DEEF;
+                    // border: 2px #3D3D3D dotted;
 
             }
             #content_share{
@@ -491,7 +491,7 @@
                         <div id="content_fromwhere">
 
                         </div>
-
+                       
 
                         <div id="content_image_div">
                             <img id="content_image" style="width:100%"/>

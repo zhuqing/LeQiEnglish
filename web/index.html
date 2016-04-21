@@ -73,16 +73,15 @@
 
             function turnPage(page, size) {
                 $.ajax({
-                    url: httpURL + "/content/getContentList",
-                    data: "currentPage=" + page + "&size=" + size+"&type=0",
+                    url: httpURL + "/content/getContentList/LISTEN/1/20",
                     type: "POST",
                     dataType: "json",
                     success: function(result) {
-                        currentPage = result.currentPage;
-                        size = result.pageSize;
-                        allPage = result.allPage;
-                        allCount = result.allCount;
-                        var list = result.list;
+                        currentPage = result.value.page.value.currentPage;
+                        size = result.value.page.value.pageSize;
+                        allPage = result.value.page.value.allPage;
+                        allCount = result.value.page.value.allCount;
+                        var list = result.value.value.value;
                         setPage(size, currentPage, allPage, allCount);
                         //createTable(list,size,currentPage,allCount);
                         createGridView($("#content_content"), list);

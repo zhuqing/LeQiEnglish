@@ -1,6 +1,7 @@
 ﻿/*jslint plusplus: true, white: true, nomen: true */
 /*global console, document, navigator, soundManager, window */
 var soundPlayer;
+var whileplayingCallback;
 (function(window) {
 
   /**
@@ -189,6 +190,10 @@ var soundPlayer;
             // TODO: only write changes
             dom.time.innerHTML = getTime(this.position, true);
 
+          }
+          
+          if(whileplayingCallback!=undefined){
+              whileplayingCallback(this.position);
           }
 
         },

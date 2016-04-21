@@ -29,7 +29,7 @@ function createGridView(content, dataArray) {
             }
             var cell = $("<div class='gridview_border' style='width:" + gradwidth + "px;height:" + (gradheight+2) + "px;left:" + layoutX + "px;top:" + layoutY + "px'></div>");
       
-            var gridCell = createGridCell(gradwidth,gradheight,dataArray[i*count+j]);
+            var gridCell = createGridCell(gradwidth,gradheight,dataArray[i*count+j].value);
           
             cell.append(gridCell);
             content.append(cell);
@@ -50,7 +50,7 @@ function createGridCell(width, height, data) {
           
     var border = $("<div style='width:"+width+"px;height:"+height+"px; padding:12px 12px 12px 12px;  background-color: #ffffff'></div>");
      //var path = encode64(JSON.stringify(data));
-    var title = $("<div ><a target='_blank' class='gridview_border_url' href='"+httpURL+"/content/readContent.html?id="+data.id+"'>" + data.title + "</a></div>");
+    var title = $("<div ><a target='_blank' class='gridview_border_url' href='"+httpURL+"/content/listen.html?id="+data.id+"'>" + data.title + "</a></div>");
     border.append(title);
        border.append($("<div class='div_blank'/>"));
       
@@ -89,5 +89,5 @@ function buttonClick_gridView(type,id){
 function titleOnclick_gridView(type,id){
    // window.
        // window.location.
-     window.location.href = httpURL+"/content/readContent.html?type="+type+"&id="+id;
+     window.location.href = httpURL+"/content/listen.html?type="+type+"&id="+id;
 }

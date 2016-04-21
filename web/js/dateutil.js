@@ -51,11 +51,14 @@ function getTime(msec) {
  * @returns {undefined}
  */
 function toMsec(time){
+
     var timeArr = time.split(":");
     var times  = 1;
     var sec = 0;
-    for(var i = timeArr.length-1; i >=0 ;i++){
+    for(var i = timeArr.length-1; i >=0 ;i--){
+
         var t = new Number(timeArr[i]);
+
         sec+=t*times;
         times*=60;
     }

@@ -81,7 +81,7 @@ public class ContentAction extends ParentAction {
         return this.getContentBiz().hasTitle(title);
     }
     
-        @RequestMapping(value = "/getContentList/{type}/{page}/{size}", method = {RequestMethod.GET,RequestMethod.POST}, produces = "application/json;charset=UTF-8")
+        @RequestMapping(value = "/getContentList/{type}/{page}/{size}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     public @ResponseBody String getContentList(@PathVariable("type") String type,@PathVariable("page") int page,@PathVariable("size") int size,HttpServletRequest req) {
         PageParam pageParam = this.createPage(page,size);
         

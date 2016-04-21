@@ -73,7 +73,7 @@
                 var piccode = $('#piccode').val();
                 var fileName = $('#fileName').val();
                 var summary = $("#summary").val();
-
+                var audioPath = $("#audioPath").val();
                 var catalogs = getCatalogs($("#catalogbox input"));
                 var words = getCatalogs($("#words input"));
 
@@ -89,7 +89,7 @@
                 $.ajax({
                     url: httpURL + "/content/insert",
                     type: 'POST',
-                    data: {title: title, type: type, content: message, fromwhere: fromwhere, iconPath: fileName, catalogs: catalogs, summary: summary, words: words},
+                    data: {title: title, type: type, content: message, fromwhere: fromwhere,audioPath:audioPath, iconPath: fileName, catalogs: catalogs, summary: summary, words: words},
                     dataType: 'json',
                     contentType: "application/x-www-form-urlencoded; charset=utf-8",
                     success: function (msg) {
@@ -160,7 +160,7 @@
                                         {
                                             var imagePath = data.path;
                                             $('#audioPlayer').attr("href", httpURL + "/" + imagePath);
-                                            $('#fileName').val(imagePath);
+                                            $('#audioPath').val(imagePath);
                                              $('#audionName').text(data.name);
 
                                         }
@@ -247,7 +247,7 @@
             
             function makePoint(){
                  var posi = window.player.position;
-                 
+                
                  $("#timePoint"+index).append( "<input id='realtime"+index+"' name='realtime"+index+"' value='"+getTime(posi)+"'/>");
                  index++;
             }
@@ -375,6 +375,8 @@
                                      <button name="converText" value="converText" title="converText" onclick="convertText()" type="button"/>
                                     <input type="hidden"
                                                     id="fileName" name="fileName" value="" />
+                                      <input type="hidden"
+                                                    id="audioPath" name="audioPath" value="" />
                             </td>
                         </tr>
 
