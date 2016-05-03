@@ -248,21 +248,50 @@
             function makePoint(){
                  var posi = window.player.position;
                 
-                 $("#timePoint"+index).append( "<input id='realtime"+index+"' name='realtime"+index+"' value='"+getTime(posi)+"'/>");
+                 $("#realtime"+index).val(getTime(posi)+"");
                  index++;
             }
+            
+            function makePoint(index){
+                 var posi = window.player.position;
+                
+                 $("#realtime"+index).val(getTime(posi)+"");
+            }
+            
             function convertText(){
                  var content =  $("#message").val();
                  content = content.replace(/<[^>]+>/g,"");
                  var array = content.split(".");
+                 var newContent = "";
                  times = 0;
                  for(var i = 0 ; i < array.length ; i++){
                      if(array[i].length===0){
-                         return;
+                        continue;
                      }
-                     times++;
-                       $("#timePoint").append( "<span id='timePoint"+i+"'></span><span id='subtitle"+i+"'>"+array[i]+".</span><br/>");
+                     newContent+=array[i]+"<br/>"
+                    // times++;
+                     //  $("#timePoint").append( "<span id='timePoint"+i+"'></span><span id='subtitle"+i+"'>"+array[i]+".</span><br/>");
                  }
+                 alert(newContent);
+                 
+                 $("#message").val(newContent);
+            }
+            
+            function conver2TimeLine(){
+                var content =  $("#message").val();
+                 var array = content.split("<br/>");
+                 
+                   $("#timePoint").html("");
+                 for(var i = 0 ; i < array.length ; i++){
+                     if(array[i].length===0){
+                        continue;
+                     }
+                     //newContent+=array[i]+"<br/>"
+                    
+                     $("#timePoint").append( "<span id='timePoint"+i+"'><input id='realtime"+i+"' onclick='makePoint("+i+")' name='realtime"+i+"'/></span><span id='subtitle"+i+"'>"+array[i]+".</span><br/>");
+                 }
+                 
+                 index = 0;
             }
         </script>
     </head>
@@ -371,8 +400,7 @@
                                     <input type="file" id="file"
                                                     name="file" size="15" 
                                                     onchange="uploadImage()" maxlength="100" /> 
-                                    <button name="makePoint" value="make point" title="makePoint" onclick="makePoint()" type="button"/>
-                                     <button name="converText" value="converText" title="converText" onclick="convertText()" type="button"/>
+                                  
                                     <input type="hidden"
                                                     id="fileName" name="fileName" value="" />
                                       <input type="hidden"
@@ -421,6 +449,10 @@
                         </tr>
                         <tr>
                             <td colspan="2" align="right">
+                                  <button name="makePoint" value="make point" title="makePoint"  onclick="makePoint()" type="button">make point</button>
+                                    <button name="converText" value="converText" title="converText" onclick="convertText()" type="button">converText</button>
+                                    <button name="conver2TimeLine" value="conver2TimeLine" title="conver2TimeLine" onclick="conver2TimeLine()" type="button">conver2TimeLine</button>
+                                   
                                 <input type="button" name="dict" value="获取翻译" onclick="fitchDict()"/>
                                 <input type="button"
                                        name="save" value="Submit" onclick="submit()" /> <input
