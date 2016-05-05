@@ -35,7 +35,7 @@ import net.sf.json.JSONObject;
 
 public class ContentBizImpl implements ContentBiz {
 
-   // private LOGGER logger = LOGGER.instance(ContentBizImpl.class);
+    // private LOGGER logger = LOGGER.instance(ContentBizImpl.class);
     private ContentDao<Content> contentDao;
     private TitleTipDao titleTipDao;
     private CommentDao commentDao;
@@ -56,7 +56,7 @@ public class ContentBizImpl implements ContentBiz {
     @Override
     public String saveContent(Content content) {
         Boolean isSave = this.contentDao.save(content);
-        if(!isSave){
+        if (!isSave) {
             return JSONUtil.errMessage();
         }
         return JSONUtil.okMessage();
@@ -80,7 +80,7 @@ public class ContentBizImpl implements ContentBiz {
     private String makeContent2Json(List<Content> list, PageParam page) {
 
         try {
-            LeqiDTO leqiDTO =  new LeqiDTO();
+            LeqiDTO leqiDTO = new LeqiDTO();
             leqiDTO.setPage(page);
             leqiDTO.setValue(list);
             JSONObjectHandler handler = new JSONObjectHandler();
@@ -96,13 +96,13 @@ public class ContentBizImpl implements ContentBiz {
 
     @Override
     public String getContent(Long id) {
-        
+
         JSONObject json = new JSONObject();
         Content content = contentDao.query(id);
         if (content != null) {
 
             try {
-               
+
                 json = JSONUtil.toJsonObject(content);
 
             } catch (Exception e) {
@@ -182,9 +182,9 @@ public class ContentBizImpl implements ContentBiz {
     @Override
     public String getAllContentByType(PageParam page, ContentTypeEnum type, Long userId) {
         List<Content> listContent = null;
-      
-            listContent = this.contentDao.getAllContent(page, type);
-      
+
+        listContent = this.contentDao.getAllContent(page, type);
+
         return this.makeContent2Json(listContent, page);
 
     }
@@ -265,7 +265,6 @@ public class ContentBizImpl implements ContentBiz {
 //        }
 //        return json.toString();
 //    }
-
 //    @Override
 //    public String getComment(PageParam page, Long contentId) {
 //        // TODO Auto-generated method stub
@@ -298,7 +297,6 @@ public class ContentBizImpl implements ContentBiz {
 //        json.put("list", array);
 //        return json.toString();
 //    }
-
 //    @Override
 //    public String getCommentById(long id) {
 //        Comment comment = this.commentDao.getCommentById(id);
@@ -314,29 +312,38 @@ public class ContentBizImpl implements ContentBiz {
 //        }
 //        return json.toString();
 //    }
-
     @Override
-    public String updateRecomment(long id, int recomment) {
-        // TODO Auto-generated method stub
-        JSONObject json = new JSONObject();
-        if (this.contentDao.addRecoment(id, recomment)) {
-            json.put("msg", "ok");
+    public String updateRecomment(long id) {
+
+        Content content = this.contentDao.query(id);
+        content.setRecomment(content.getRecomment() + 1);
+        if (this.contentDao.addRecoment(content)) {
+            return JSONUtil.okMessage();
         } else {
-            json.put("msg", "error");
+            return JSONUtil.errMessage();
         }
-        return json.toString();
+
+    }
+
+    private String update(Content content) {
+        if (this.contentDao.updateContent(content)) {
+            return JSONUtil.okMessage();
+        } else {
+            return JSONUtil.errMessage();
+        }
     }
 
     @Override
-    public String updateReader(long id, int reader) {
-        // TODO Auto-generated method stub
-        JSONObject json = new JSONObject();
-        if (this.contentDao.addReader(id, reader)) {
-            json.put("msg", "ok");
+    public String updateReader(long id) {
+
+        Content content = this.contentDao.query(id);
+        content.setReader(content.getReader() + 1);
+        if (this.contentDao.addReader(content)) {
+
+            return JSONUtil.okMessage();
         } else {
-            json.put("msg", "error");
+            return JSONUtil.errMessage();
         }
-        return json.toString();
     }
 
     @Override
@@ -354,7 +361,7 @@ public class ContentBizImpl implements ContentBiz {
     public String uploadFile(InputStream is, String fileName) {
         // TODO Auto-generated method stub
         JSONObject json = new JSONObject();
-       // String filePath = FileUtil.getDirPath() + FileUtil.getRadomName(fileName);
+        // String filePath = FileUtil.getDirPath() + FileUtil.getRadomName(fileName);
 //
 //        try {
 //            if (!FileUtil.saveFile(is, filePath)) {
@@ -426,7 +433,6 @@ public class ContentBizImpl implements ContentBiz {
 //
 //        return JSONUtil.okMessage();
 //    }
-
     @Override
     public String createBook(Content content) {
         JSONObject json = new JSONObject();
@@ -494,7 +500,7 @@ public class ContentBizImpl implements ContentBiz {
         }
 
         try {
-           // return JSONUtil.toJson(contents);
+            // return JSONUtil.toJson(contents);
         } catch (Exception ex) {
             java.util.logging.Logger.getLogger(ContentBizImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -581,7 +587,6 @@ public class ContentBizImpl implements ContentBiz {
 //
 //        return JSONUtil.errMessage();
 //    }
-
     @Override
     public String getAllContentByTypeAndCatalogs(PageParam page, ContentTypeEnum type, String catalogs) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -591,7 +596,7 @@ public class ContentBizImpl implements ContentBiz {
     @Override
     public String hasTitle(String title) {
         Boolean hasTitle = this.contentDao.hasTitle(title);
-       return JSONUtil.toJsonObject(hasTitle).toString();  
+        return JSONUtil.toJsonObject(hasTitle).toString();
     }
 
     @Override

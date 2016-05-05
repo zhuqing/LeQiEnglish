@@ -94,9 +94,19 @@ public interface ContentBiz {
 //
 //    public String getCommentById(long id);
 
-    public String updateRecomment(long id, int recomment);
+    /**
+     * 更新评论数
+     * @param id
+     * @return 
+     */
+    public String updateRecomment(long id);
 
-    public String updateReader(long id, int reader);
+    /**
+     * 更新阅读数
+     * @param id
+     * @return 
+     */
+    public String updateReader(long id);
 
     /**
      * 删除Content by Id

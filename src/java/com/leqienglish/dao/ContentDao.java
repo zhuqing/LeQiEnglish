@@ -46,7 +46,7 @@ public interface ContentDao<T extends Content> extends TempDao<T>{
      * @param recoment
      * @return
      */
-    public boolean addRecoment(long id, int recoment);
+    public boolean addRecoment(T t);
 
     /**
      * 修改阅读数
@@ -55,7 +55,7 @@ public interface ContentDao<T extends Content> extends TempDao<T>{
      * @param reader
      * @return
      */
-    public boolean addReader(long id, int reader);
+    public boolean addReader(T t);
 
 
 

@@ -29,6 +29,8 @@ public abstract class TampletDaoImpl<T extends Entity> {
         return  this.getMongoTemplate().find(query, this.getEntityClass());
     }
     
+
+    
       /**
      * 分页查询
      *

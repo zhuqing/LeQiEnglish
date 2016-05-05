@@ -546,3 +546,16 @@ function loadimag(image){
      image.attr("src",httpURL+"/code/fetch?d="+timenow);
     
 }
+
+function updateReader(id){
+     $.ajax({
+        url: httpURL
+                + "/content/updateReader/"+id,
+       
+        type: "POST",
+        dataType: "json",
+        success: function(result) {
+            
+        }
+    });
+}

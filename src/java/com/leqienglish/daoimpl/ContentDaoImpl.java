@@ -9,6 +9,7 @@ import com.leqienglish.entity.PageParam;
 import com.leqienglish.util.operator.OperatorEnum;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 
 public class ContentDaoImpl<T extends Content> extends TampletDaoImpl<T> implements ContentDao<T> {
 
@@ -32,13 +33,17 @@ public class ContentDaoImpl<T extends Content> extends TampletDaoImpl<T> impleme
     }
 
     @Override
-    public boolean addRecoment(long id, int recoment) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean addRecoment(T t) {
+         Update update = new Update();
+        update.set("recomment", t.getRecomment());
+        return this.update(getQuery(t.getId()), update);
     }
 
     @Override
-    public boolean addReader(long id, int reader) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean addReader(T t) {
+        Update update = new Update();
+        update.set("reader", t.getReader());
+        return this.update(getQuery(t.getId()), update);
     }
 
     @Override
@@ -48,7 +53,16 @@ public class ContentDaoImpl<T extends Content> extends TampletDaoImpl<T> impleme
 
     @Override
     public Boolean updateContent(T content) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Update update = new Update();
+
+        return this.update(getQuery(content.getId()), update);
+    }
+
+    private Query getQuery(Long id) {
+        Query query = new Query();
+        Criteria criteria = Criteria.where("id").is(id);
+        query.addCriteria(criteria);
+        return query;
     }
 
     @Override

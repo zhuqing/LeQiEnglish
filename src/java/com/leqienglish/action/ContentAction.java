@@ -6,6 +6,7 @@ import com.leqienglish.entity.Content;
 import com.leqienglish.entity.ContentTypeEnum;
 import com.leqienglish.entity.PageParam;
 import com.leqienglish.util.Util;
+import com.leqienglish.util.enumutil.EnumUtil;
 //import com.leqienglish.util.log.LOGGER;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,15 +44,15 @@ public class ContentAction extends ParentAction {
     public @ResponseBody
     String insertContect(HttpServletRequest req, HttpServletResponse resp) {
         Content content = new Content();
-        
+
         content.setTitle(this.getParmeter(ContentAction.TITLE, req));
         content.setContent(this.getParmeter(ContentAction.CONTENT, req));
         content.setIconPath(this.getParmeter(ContentAction.ICON_PATH, req));
         content.setAudioPath(this.getParmeter(AUDIO_PATH, req));
         content.setFromwhere(this.getParmeter(FROM_WHERE, req));
-       
+
         content.setSummary(this.getParmeter(SUMMARY, req));
-        
+
         content.setUserId(this.getLoginedUserId(req));
         String type = this.getParmeter(TYPE, req);
         if (type == null) {
@@ -80,13 +81,30 @@ public class ContentAction extends ParentAction {
     String hasTitle(@PathVariable("title") String title) {
         return this.getContentBiz().hasTitle(title);
     }
-    
-        @RequestMapping(value = "/getContentList/{type}/{page}/{size}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    public @ResponseBody String getContentList(@PathVariable("type") String type,@PathVariable("page") int page,@PathVariable("size") int size,HttpServletRequest req) {
-        PageParam pageParam = this.createPage(page,size);
-        
+
+    /**
+     * 根据类型获取数据
+     * @param type
+     * @param page
+     * @param size
+     * @param req
+     * @return 
+     */
+    @RequestMapping(value = "/getContentList/{type}/{page}/{size}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String getContentList(@PathVariable("type") String type, @PathVariable("page") int page, @PathVariable("size") int size, HttpServletRequest req) {
+        PageParam pageParam = this.createPage(page, size);
+        if (!EnumUtil.hasEnum(ContentTypeEnum.class, type)) {
+            type = ContentTypeEnum.ARTICLE.name();
+        }
         return this.contentBiz
                 .getAllContentByType(pageParam, ContentTypeEnum.valueOf(type), null);
+    }
+    
+    @RequestMapping(value = "/updateReader/{id}", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public @ResponseBody
+    String updateReader(@PathVariable("id") Long id){
+        return this.contentBiz.updateReader(id);
     }
 
 //
@@ -104,7 +122,6 @@ public class ContentAction extends ParentAction {
 //
 //        return "ok";
 //    }
-
 //
 //    public String insertFamousWord() {
 //        this.setTitle("famous");
@@ -147,7 +164,6 @@ public class ContentAction extends ParentAction {
 //
 //        return "ok";
 //    }
-
 //
 //    public String getContentListByCatalogId() {
 //        return "ok";

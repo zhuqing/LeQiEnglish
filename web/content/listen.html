@@ -57,7 +57,7 @@ and open the template in the editor.
 
                 id = GetQueryString("id");
                 // path = GetQueryString("path");
-
+                updateReader(id);
                 // alert(path);
                 // var title = GetQueryString("title");
                 if (id == null) {
@@ -86,7 +86,7 @@ and open the template in the editor.
                             $("#audioPlayer").attr("href", httpURL + "/" + msg.value.audioPath);
                           //  alert(msg.value.audioPath);
                             splitContent(msg.value.content);
-                       
+                       $("#reading").text(parseInt(msg.value.reader)+1);
                             //updateReader(msg.id,msg.reader + 1);
                             //  $("#content_content").mouseup(getSelectionText);
                         }
@@ -385,6 +385,7 @@ and open the template in the editor.
 
                         </div>
                         <div id="content_share">
+                            <span>reading:<span id="reading"></span></span>
                             <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a><a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a><a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a><a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a><a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a></div>
                             <script>window._bd_share_config = {"common": {"bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "32"}, "share": {}, "image": {"viewList": ["qzone", "tsina", "tqq", "renren", "weixin"], "viewText": "分享到：", "viewSize": "16"}};
                                 with (document)

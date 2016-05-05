@@ -15,5 +15,7 @@ public enum ContentTypeEnum {
     BOOK,//课本
     READING,//跟读
     VOCABULARY,//词汇
-    TITLETIP//名言
+    TITLETIP;//名言
+    
+   
 }
