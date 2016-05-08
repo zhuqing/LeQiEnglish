@@ -16,6 +16,11 @@
         <script type="text/javascript" src="./js/md5.js"></script>
         <script type="text/javascript" src="./js/leqi.js"></script>
         <script type="text/javascript" src="./js/gridview.js"></script>
+        <!--<script type="text/javascript" src="./js/component.js"></script>-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.24/browser.min.js"></script>
+                <script type="text/javascript" src="./js/react/react.js"></script>
+        <script type="text/javascript" src="./js/react/react-dom.js"></script>
+
         <script type="text/javascript" src="./js/dateutil.js"></script>
         <script type="text/javascript" src="./js/json2.js"></script>
         <script type="text/javascript" src="./js/showDialog.js"></script>
@@ -57,41 +62,46 @@
 
             }
         </style>
+      
         <script type="text/javascript">
 
             var currentPage;
             var size;
             var allcount;
             var allPage;
+          
 
-            $(document).ready(function() {
-                //	addTable(httpURL+"/content/table.html",true,null);
-                setContent2IdByUrl(httpURL + "/header.html", "content_header");
-                setContent2IdByUrl(httpURL + "/bottom.html", "content_bottom");
-                turnPage(1, 24);
+
+            $(document).ready(function () {
+            //	addTable(httpURL+"/content/table.html",true,null);
+            setContent2IdByUrl(httpURL + "/header.html", "content_header");
+            setContent2IdByUrl(httpURL + "/bottom.html", "content_bottom");
+            //turnPage(1, 24);
+
+           
             });
-
             function turnPage(page, size) {
-                $.ajax({
-                    url: httpURL + "/content/getContentList/LISTEN/1/20",
+            $.ajax({
+            url: httpURL + "/content/getContentList/LISTEN/1/20",
                     type: "POST",
                     dataType: "json",
-                    success: function(result) {
-                        currentPage = result.value.page.value.currentPage;
-                        size = result.value.page.value.pageSize;
-                        allPage = result.value.page.value.allPage;
-                        allCount = result.value.page.value.allCount;
-                        var list = result.value.value.value;
-                        setPage(size, currentPage, allPage, allCount);
-                        //createTable(list,size,currentPage,allCount);
-                        createGridView($("#content_content"), list);
+                    success: function (result) {
+                    currentPage = result.value.page.value.currentPage;
+                    size = result.value.page.value.pageSize;
+                    allPage = result.value.page.value.allPage;
+                    allCount = result.value.page.value.allCount;
+                    var list = result.value.value.value;
+                    setPage(size, currentPage, allPage, allCount);
+                    //createTable(list,size,currentPage,allCount);
+                    createGridView($("#content_content"), list);
                     }
-                });
+            });
             }
 
 
 
         </script>
+        
     </head>
 
     <body>
@@ -110,6 +120,17 @@
 
             </div>
         </div>
-
+        <script type="text/babel" src="./js/component.js">
+     
+          
+class SubTitle extends React.Component{
+    
+     render()
+     {
+       var dataTime = getDate(this.props.time,"yyyy-MM-dd");
+       return  <div> <span> update: </span>{dataTime}<span ></span > </div>;
+     }
+}
+        </script>
     </body>
 </html>

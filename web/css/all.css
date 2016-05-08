@@ -299,3 +299,7 @@ div.roundin {
 .input-error {
     border: 1px solid red;
 }
+
+.with-100{
+    width:100%;
+}

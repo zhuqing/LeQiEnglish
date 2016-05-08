@@ -59,5 +59,9 @@ and open the template in the editor.
 .div_blank{
     height: 10px;
 }
+.gridview_gridCell{
+    padding: 12px 12px 12px 12px;
+    background-color: #ffffff;
+}
 
 
